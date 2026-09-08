@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giới thiệu về D2TP Book - Hệ thống nhà sách</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div>Chào mừng bạn đến với hệ thống nhà sách D2TP book!</div>
+    <div class="top-bar-links">
+      <a href="/promotions">Khuyến mãi</a>
+      <a href="/about">Hệ thống nhà sách</a>
+      <a href="#" onclick="ChatWidget.open(); return false;">Hỗ trợ khách hàng</a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-box">
+        <div class="logo-d2t">D2TP</div>
+        <div class="logo-book">BOOK</div>
+      </div>
+    </a>
+    <div class="header-search">
+      <input id="nav-search" type="text" placeholder="Tìm kiếm sách, tác giả, nhà xuất bản...">
+      <button>🔍</button>
+    </div>
+    <div class="header-actions">
+      <div class="user-menu-wrap" id="user-menu" style="display:none;">
+        <a href="#" class="header-btn" onclick="toggleDropdown(); return false;">
+          <span class="icon">😊</span>
+          <span id="user-name">Tài khoản</span>
+        </a>
+        <div class="user-dropdown" id="user-dropdown">
+          <a href="/orders">📦 Đơn hàng của tôi</a>
+          <a href="/admin" class="admin-link" style="display:none;">⚙️ Quản trị hệ thống</a>
+          <a href="#" class="danger" onclick="Auth.logout(); return false;">🚪 Đăng xuất</a>
+        </div>
+      </div>
+      <a href="/login" class="header-btn" id="login-link">
+        <span class="icon">👤</span>
+        <span>Đăng nhập</span>
+      </a>
+      <a href="/cart" class="header-btn cart-btn">
+        <span class="icon">🛒</span>
+        <span>Giỏ hàng</span>
+        <span class="cart-count" id="cart-badge" style="display:none">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <a href="/">Trang chủ</a> / <span>Giới thiệu về D2TP Book</span>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="content-card">
+    <h1>📚 Giới thiệu về D2TP Book</h1>
+    <p class="content-lead">
+      <strong>D2TP Book</strong> là hệ thống nhà sách trực tuyến hàng đầu, được thành lập với sứ mệnh mang tri thức
+      và những cuốn sách hay nhất đến gần hơn với độc giả Việt Nam. Chúng tôi tin rằng mỗi cuốn sách là một cánh cửa
+      mở ra thế giới mới, và việc đọc sách nên trở thành thói quen của mọi người, mọi nhà.
+    </p>
+
+    <div class="about-stats">
+      <div class="about-stat"><div class="num">10.000+</div><div class="lbl">Đầu sách đa dạng</div></div>
+      <div class="about-stat"><div class="num">50.000+</div><div class="lbl">Khách hàng tin tưởng</div></div>
+      <div class="about-stat"><div class="num">63</div><div class="lbl">Tỉnh thành giao hàng</div></div>
+      <div class="about-stat"><div class="num">100%</div><div class="lbl">Sách thật, chính hãng</div></div>
+    </div>
+
+    <h2>Câu chuyện thương hiệu</h2>
+    <p>
+      Khởi nguồn từ tình yêu sách của một nhóm bạn trẻ, D2TP Book ra đời năm 2024 như một không gian nơi người yêu sách
+      có thể dễ dàng tìm kiếm, lựa chọn và sở hữu những đầu sách yêu thích với mức giá hợp lý nhất. Từ những ngày đầu
+      với vài trăm đầu sách, đến nay D2TP Book đã trở thành điểm đến quen thuộc của hàng chục nghìn độc giả trên cả nước.
+    </p>
+
+    <h2>Tầm nhìn & Sứ mệnh</h2>
+    <p>
+      <strong>Tầm nhìn:</strong> Trở thành hệ thống nhà sách trực tuyến được yêu thích nhất Việt Nam, nơi nuôi dưỡng
+      văn hóa đọc cho mọi thế hệ.
+    </p>
+    <p>
+      <strong>Sứ mệnh:</strong> Lan tỏa tri thức, mang đến trải nghiệm mua sắm sách trực tuyến nhanh chóng, tiện lợi và
+      đáng tin cậy với dịch vụ chăm sóc khách hàng tận tâm.
+    </p>
+
+    <h2>Giá trị cốt lõi</h2>
+    <div class="about-values">
+      <div class="about-value"><div class="ic">✅</div><strong>Uy tín</strong><p>Cam kết 100% sách thật, chính hãng từ các nhà xuất bản uy tín.</p></div>
+      <div class="about-value"><div class="ic">🚚</div><strong>Tận tâm</strong><p>Giao hàng nhanh toàn quốc, đổi trả dễ dàng trong 7 ngày.</p></div>
+      <div class="about-value"><div class="ic">💡</div><strong>Tri thức</strong><p>Tuyển chọn kỹ lưỡng những đầu sách giá trị cho cộng đồng.</p></div>
+    </div>
+
+    <h2>Hệ thống nhà sách</h2>
+    <p>D2TP Book phục vụ khách hàng trên toàn quốc thông qua nền tảng trực tuyến và các trung tâm phân phối:</p>
+    <ul>
+      <li><strong>Trụ sở chính:</strong> Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội</li>
+      <li><strong>Trung tâm miền Nam:</strong> 268 Lý Thường Kiệt, Quận 10, TP. Hồ Chí Minh</li>
+      <li><strong>Trung tâm miền Trung:</strong> 54 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng</li>
+      <li><strong>Hotline:</strong> 1900 1234 (8h - 21h tất cả các ngày)</li>
+    </ul>
+
+    <p style="margin-top:20px;">
+      Cần hỗ trợ thêm? Hãy <a href="#" onclick="ChatWidget.open(); return false;" style="color:var(--red);font-weight:700;">trò chuyện với nhân viên hỗ trợ</a>
+      hoặc khám phá ngay <a href="/books" style="color:var(--red);font-weight:700;">kho sách của chúng tôi</a>.
+    </p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div>© 2024 D2TP book. Tất cả các quyền được bảo lưu.</div>
+      <div>Được xây dựng với ❤️ tại Việt Nam.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

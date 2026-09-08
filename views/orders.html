@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đơn hàng của tôi - D2TP book</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div>Chào mừng bạn đến với hệ thống nhà sách D2TP book!</div>
+    <div class="top-bar-links">
+      <a href="/promotions">Khuyến mãi</a>
+      <a href="/about">Hệ thống nhà sách</a>
+      <a href="#" onclick="ChatWidget.open(); return false;">Hỗ trợ khách hàng</a>
+    </div>
+  </div>
+</div>
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-box">
+        <div class="logo-d2t">D2TP</div>
+        <div class="logo-book">BOOK</div>
+      </div>
+    </a>
+    <div class="header-search">
+      <input id="nav-search" type="text" placeholder="Tìm kiếm sách, tác giả, nhà xuất bản...">
+      <button onclick="const q=document.getElementById('nav-search').value; if(q) window.location.href='/books?search='+encodeURIComponent(q)">🔍</button>
+    </div>
+    <div class="header-actions">
+      <div class="user-menu-wrap" id="user-menu" style="display:none;">
+        <a href="#" class="header-btn" onclick="toggleDropdown(); return false;">
+          <span class="icon">😊</span>
+          <span id="user-name">Tài khoản</span>
+        </a>
+        <div class="user-dropdown" id="user-dropdown">
+          <a href="/orders">📦 Đơn hàng của tôi</a>
+          <a href="/admin" class="admin-link" style="display:none;">⚙️ Quản trị hệ thống</a>
+          <a href="#" class="danger" onclick="Auth.logout(); return false;">🚪 Đăng xuất</a>
+        </div>
+      </div>
+      <a href="/login" class="header-btn" id="login-link">
+        <span class="icon">👤</span>
+        <span>Đăng nhập</span>
+      </a>
+      <a href="/cart" class="header-btn cart-btn">
+        <span class="icon">🛒</span>
+        <span>Giỏ hàng</span>
+        <span class="cart-count" id="cart-badge" style="display:none">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>📦 Đơn hàng của tôi</h1>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container" style="max-width:860px; margin:0 auto;">
+    <div id="orders-list"><div class="loading"><div class="spinner"></div></div></div>
+  </div>
+</section>
+
+<script src="/js/app.js"></script>
+<script>
+if (!Auth.isLoggedIn()) window.location.href = '/login';
+
+async function loadOrders() {
+  const orders = await api('GET', '/api/orders/my');
+  const el = document.getElementById('orders-list');
+
+  if (!orders.length) {
+    el.innerHTML = `
+      <div class="empty-state" style="background:white; padding:40px; border-radius:8px; border:1px solid var(--border); text-align:center;">
+        <div class="icon" style="font-size:40px; margin-bottom:10px;">📦</div>
+        <h3>Chưa có đơn hàng nào</h3>
+        <p style="color:var(--muted); margin-bottom:20px;">Hãy mua sắm để có đơn hàng đầu tiên của bạn!</p>
+        <a href="/books" class="btn-red">📚 Mua sắm ngay</a>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = orders.reverse().map(order => `
+    <div class="order-card" style="margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+      <div class="order-card-head">
+        <div>
+          <div class="order-id-badge">Đơn hàng #${order.id}</div>
+          <div class="order-date-text">📅 ${fmt.date(order.createdAt)} · 📍 ${order.address}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="status-badge ${fmt.statusClass(order.status)}">${fmt.status(order.status)}</span>
+          ${order.status === 'processing' ? `
+            <button onclick="cancelOrder(${order.id})" style="background:#fce4ec; color:#c62828; border:1px solid #f48fb1; padding:4px 12px; border-radius:99px; font-size:11px; font-weight:700; cursor:pointer; transition: 0.2s;">✕ Hủy đơn</button>
+          ` : ''}
+        </div>
+      </div>
+      
+      ${order.status === 'cancelled' && order.cancelReason ? `
+        <div style="padding: 10px 15px; background: #fff1f2; border-bottom: 1px solid var(--border); color: #be123c; font-size: 13px;">
+          <strong>Lý do hủy:</strong> ${order.cancelReason}
+        </div>
+      ` : ''}
+
+      <div class="order-card-body">
+        ${order.items.map(item => `
+          <div class="oitem-row">
+            <img src="${item.book?.cover || ''}" alt="${item.book?.title}" onerror="this.src='https://via.placeholder.com/50x67/f5ede0/6b3f1a?text=📚'">
+            <div class="oname">${item.book?.title || 'Sách bị xóa'}</div>
+            <div class="oqty">x${item.quantity}</div>
+            <div class="oprice">${fmt.price(item.price * item.quantity)}</div>
+          </div>`).join('')}
+      </div>
+      <div class="order-card-foot">Tổng tiền: ${fmt.price(order.total)}</div>
+    </div>`).join('');
+}
+
+// HÀM XỬ LÝ HỦY ĐƠN VÀ HỎI LÝ DO
+async function cancelOrder(orderId) {
+  const reason = prompt('Vui lòng nhập lý do hủy đơn hàng (Bắt buộc):');
+  
+  if (reason === null) return; 
+  
+  if (reason.trim() === '') {
+    return Toast.show('Bạn phải nhập lý do để hủy đơn!', 'error');
+  }
+  
+  try {
+    await api('PUT', `/api/orders/${orderId}/cancel`, { reason: reason.trim() });
+    Toast.show('✅ Đã hủy đơn hàng thành công', 'success');
+    loadOrders(); 
+  } catch (e) {
+    Toast.show(e.message, 'error');
+  }
+}
+
+loadOrders();
+</script>
+</body>
+</html>

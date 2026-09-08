@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi tiết sách - D2TP book</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div>Chào mừng bạn đến với hệ thống nhà sách D2TP book!</div>
+    <div class="top-bar-links">
+      <a href="/promotions">Khuyến mãi</a>
+      <a href="/about">Hệ thống nhà sách</a>
+      <a href="#" onclick="ChatWidget.open(); return false;">Hỗ trợ khách hàng</a>
+    </div>
+  </div>
+</div>
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-box">
+        <div class="logo-d2t">D2TP</div>
+        <div class="logo-book">BOOK</div>
+      </div>
+    </a>
+    <div class="header-search">
+      <input id="nav-search" type="text" placeholder="Tìm kiếm sách, tác giả, nhà xuất bản...">
+      <button onclick="const q=document.getElementById('nav-search').value; if(q) window.location.href='/books?search='+encodeURIComponent(q)">🔍</button>
+    </div>
+    <div class="header-actions">
+      <div class="user-menu-wrap" id="user-menu" style="display:none;">
+        <a href="#" class="header-btn" onclick="toggleDropdown(); return false;">
+          <span class="icon">😊</span>
+          <span id="user-name">Tài khoản</span>
+        </a>
+        <div class="user-dropdown" id="user-dropdown">
+          <a href="/orders">📦 Đơn hàng của tôi</a>
+          <a href="/admin" class="admin-link" style="display:none;">⚙️ Quản trị hệ thống</a>
+          <a href="#" class="danger" onclick="Auth.logout(); return false;">🚪 Đăng xuất</a>
+        </div>
+      </div>
+      <a href="/login" class="header-btn" id="login-link">
+        <span class="icon">👤</span>
+        <span>Đăng nhập</span>
+      </a>
+      <a href="/cart" class="header-btn cart-btn">
+        <span class="icon">🛒</span>
+        <span>Giỏ hàng</span>
+        <span class="cart-count" id="cart-badge" style="display:none">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+<div id="detail-content" class="section">
+  <div class="container">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<section class="section" style="background:white; padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
+  <div class="container">
+    <h2 class="section-title" style="margin-bottom:1.5rem; color:var(--red); font-size:18px; border-bottom:2px solid var(--red); display:inline-block; padding-bottom:5px;">Sách liên quan</h2>
+    <div class="product-grid" id="related-books" style="margin-top: 15px;"></div>
+  </div>
+</section>
+
+<script src="/js/app.js"></script>
+<script>
+const bookId = location.pathname.split('/').pop();
+let bookData;
+
+async function loadBook() {
+  bookData = await api('GET', `/api/books/${bookId}`);
+  document.title = `${bookData.title} - D2TP book`;
+  
+  const disc = bookData.originalPrice ? Math.round((1 - bookData.price / bookData.originalPrice) * 100) : 0;
+  
+  document.getElementById('detail-content').innerHTML = `
+    <div class="container" style="background:white; padding:20px; border-radius:8px; border:1px solid var(--border); margin-bottom:20px;">
+      <div style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">
+        <a href="/" style="color:var(--text); text-decoration:none;">Trang chủ</a> /
+        <a href="/books" style="color:var(--text); text-decoration:none;">Sách</a> /
+        ${bookData.title}
+      </div>
+      <div class="book-detail-page">
+        <div class="bd-cover-box">
+          <img src="${bookData.cover}" alt="${bookData.title}" onerror="this.src='https://via.placeholder.com/320x430/f5ede0/6b3f1a?text=📚'">
+        </div>
+        <div class="bd-info-box">
+          ${bookData.category ? `<div class="bd-cat-tag">${bookData.category.name}</div>` : ''}
+          <h1 class="bd-title">${bookData.title}</h1>
+          <div class="bd-author">Tác giả: <strong>${bookData.author}</strong></div>
+          <div class="bd-rating">
+            <span class="stars-gold">${'★'.repeat(Math.round(bookData.rating))}</span>
+            <strong>${bookData.rating}</strong> · <span>${bookData.sold.toLocaleString()} đã bán</span>
+          </div>
+          <div class="bd-price-box">
+            <span class="bd-price">${fmt.price(bookData.price)}</span>
+            ${bookData.originalPrice ? `<span class="bd-orig">${fmt.price(bookData.originalPrice)}</span>` : ''}
+            ${disc > 0 ? `<span class="bd-discount">-${disc}%</span>` : ''}
+          </div>
+          
+          <div class="bd-desc">${bookData.description}</div>
+          
+          <div class="bd-meta">
+            <div class="bd-meta-item"><span class="key">NXB:</span> <span class="val">${bookData.publisher || 'N/A'}</span></div>
+            <div class="bd-meta-item"><span class="key">Số trang:</span> <span class="val">${bookData.pages || 'N/A'}</span></div>
+            <div class="bd-meta-item"><span class="key">Năm XB:</span> <span class="val">${bookData.year || 'N/A'}</span></div>
+            <div class="bd-meta-item"><span class="key">Tồn kho:</span> <span class="val">${bookData.stock} cuốn</span></div>
+          </div>
+
+          <div class="bd-qty-row">
+            <span>Số lượng:</span>
+            <div class="qty-control">
+              <button class="qty-btn2" onclick="changeQty(-1)">−</button>
+              <input type="text" class="qty-val" id="qty-display" value="1" readonly>
+              <button class="qty-btn2" onclick="changeQty(1)">+</button>
+            </div>
+          </div>
+          
+          <div class="bd-actions">
+            <button class="btn-cart-lg" onclick="addToCart()">🛒 Thêm vào giỏ</button>
+            <button class="btn-buy-lg" onclick="buyNow()">⚡ Mua ngay</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  if (bookData.categoryId) {
+    const related = await api('GET', `/api/books?category=${bookData.categoryId}`);
+    const others = related.filter(b => b.id != bookId).slice(0, 5);
+    
+    document.getElementById('related-books').innerHTML = others.map(b => {
+      const discount = b.originalPrice ? Math.round((1 - b.price / b.originalPrice) * 100) : 0;
+      return `
+        <a href="/book/${b.id}" class="product-card">
+          <div class="product-thumb">
+            <img src="${b.cover}" alt="${b.title}" onerror="this.src='https://via.placeholder.com/130x170/f5f5f5/c92127?text=📚'">
+            ${discount > 0 ? `<div class="badge-discount">-${discount}%</div>` : ''}
+          </div>
+          <div class="product-info">
+            <div class="product-title">${b.title}</div>
+            <div class="product-price-row">
+              <span class="price-new">${fmt.price(b.price)}</span>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+  }
+}
+
+let qty = 1;
+function changeQty(d) {
+  qty = Math.max(1, Math.min(10, qty + d));
+  document.getElementById('qty-display').value = qty;
+}
+
+function addToCart() {
+  if (!bookData) return;
+  Cart.add(bookData, qty);
+}
+
+function buyNow() {
+  addToCart();
+  window.location.href = '/cart';
+}
+
+loadBook();
+</script>
+</body>
+</html>

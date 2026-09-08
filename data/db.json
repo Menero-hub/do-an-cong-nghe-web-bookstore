@@ -1,0 +1,905 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@bookstore.com",
+      "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+      "role": "admin",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": 2,
+      "name": "Nguyễn Văn A",
+      "email": "user@example.com",
+      "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+      "role": "user",
+      "createdAt": "2024-01-15"
+    },
+    {
+      "id": 3,
+      "name": "Hoàng Anh Tuấn",
+      "email": "tuan123@gmail.com",
+      "password": "$2a$10$ECqo0EyueOrk5EDpXjf4d.lf6nAz9utuBNIb2Aw7Mz4lhZ3gbLc/W",
+      "role": "user",
+      "createdAt": "2026-06-01"
+    },
+    {
+      "id": 4,
+      "name": "dat",
+      "email": "nguyentiendatdz198@gmail.com",
+      "password": "$2a$10$ew1EF2RFbAAcLyOxdAUFEuyndSX6cuioneGRuJ8urIk3XDzUfinfS",
+      "role": "user",
+      "createdAt": "2026-06-03"
+    },
+    {
+      "id": 5,
+      "name": "Đạt Nguyễn Tiến",
+      "email": "198@gmail.com",
+      "password": "$2a$10$xJpNE0GzRoSjIYmmkTkGEuOMay0QLugWtj7wjHURkBvwlpSlHj3NW",
+      "role": "user",
+      "createdAt": "2026-09-08"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Văn học",
+      "slug": "van-hoc",
+      "description": "Sách văn học trong và ngoài nước"
+    },
+    {
+      "id": 2,
+      "name": "Kỹ năng sống",
+      "slug": "ky-nang-song",
+      "description": "Sách phát triển bản thân"
+    },
+    {
+      "id": 3,
+      "name": "Khoa học",
+      "slug": "khoa-hoc",
+      "description": "Sách khoa học công nghệ"
+    },
+    {
+      "id": 4,
+      "name": "Lịch sử",
+      "slug": "lich-su",
+      "description": "Sách lịch sử văn hóa"
+    },
+    {
+      "id": 5,
+      "name": "Thiếu nhi",
+      "slug": "thieu-nhi",
+      "description": "Sách dành cho trẻ em"
+    },
+    {
+      "id": 6,
+      "name": "Tâm lý học",
+      "slug": "tam-ly-hoc",
+      "description": "Sách tâm lý học"
+    }
+  ],
+  "books": [
+    {
+      "id": 22,
+      "title": "Harry Potter Và Hòn Đá Phù Thủy",
+      "author": "J.K. Rowling",
+      "price": 115000,
+      "originalPrice": 140000,
+      "categoryId": 5,
+      "stock": 73,
+      "sold": 5607,
+      "rating": 4.9,
+      "cover": "/images/Harry_Potter_và_Hòn_đá_phù_thủy_bìa_2003.jpeg",
+      "description": "Tập đầu tiên của series phép thuật kinh điển mọi thời đại.",
+      "publisher": "NXB Trẻ",
+      "pages": 360,
+      "year": 2022,
+      "featured": true
+    },
+    {
+      "id": 8,
+      "title": "Dạy Con Làm Giàu",
+      "author": "Robert T. Kiyosaki",
+      "price": 95000,
+      "originalPrice": 120000,
+      "categoryId": 2,
+      "stock": 60,
+      "sold": 4500,
+      "rating": 4.7,
+      "cover": "/images/dayconlamgiau.webp",
+      "description": "Bài học về tư duy tài chính để đạt được sự tự do tiền bạc.",
+      "publisher": "NXB Trẻ",
+      "pages": 310,
+      "year": 2019,
+      "featured": true
+    },
+    {
+      "id": 23,
+      "title": "Hoàng Tử Bé",
+      "author": "Antoine de Saint-Exupéry",
+      "price": 65000,
+      "originalPrice": 85000,
+      "categoryId": 5,
+      "stock": 69,
+      "sold": 4201,
+      "rating": 4.9,
+      "cover": "/images/shopping.webp",
+      "description": "Câu chuyện triết lý tuyệt đẹp dành cho cả trẻ em lẫn người lớn.",
+      "publisher": "NXB Kim Đồng",
+      "pages": 112,
+      "year": 2021,
+      "featured": true
+    },
+    {
+      "id": 9,
+      "title": "Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm",
+      "author": "Mark Manson",
+      "price": 85000,
+      "originalPrice": 109000,
+      "categoryId": 2,
+      "stock": 51,
+      "sold": 3804,
+      "rating": 4.6,
+      "cover": "/images/nghethuatannuong.webp",
+      "description": "Cẩm nang sống thực tế giúp bạn bớt lo âu và tập trung vào điều quan trọng.",
+      "publisher": "NXB Nhã Nam",
+      "pages": 285,
+      "year": 2020,
+      "featured": false
+    },
+    {
+      "id": 21,
+      "title": "Dế Mèn Phiêu Lưu Ký",
+      "author": "Tô Hoài",
+      "price": 55000,
+      "originalPrice": 70000,
+      "categoryId": 5,
+      "stock": 55,
+      "sold": 3205,
+      "rating": 4.8,
+      "cover": "/images/demenphieuluuki.webp",
+      "description": "Tác phẩm kinh điển của văn học thiếu nhi Việt Nam.",
+      "publisher": "NXB Kim Đồng",
+      "pages": 256,
+      "year": 2023,
+      "featured": false
+    },
+    {
+      "id": 29,
+      "title": "Đi Tìm Lẽ Sống",
+      "author": "Viktor E. Frankl",
+      "price": 75000,
+      "originalPrice": 95000,
+      "categoryId": 6,
+      "stock": 50,
+      "sold": 3100,
+      "rating": 4.9,
+      "cover": "/images/ditimlesong.webp",
+      "description": "Ký sự trong trại tập trung và liệu pháp ý nghĩa của một bác sĩ tâm lý.",
+      "publisher": "NXB Tổng hợp TP.HCM",
+      "pages": 200,
+      "year": 2021,
+      "featured": false
+    },
+    {
+      "id": 24,
+      "title": "Totto-chan Bên Cửa Sổ",
+      "author": "Kuroyanagi Tetsuko",
+      "price": 85000,
+      "originalPrice": 110000,
+      "categoryId": 5,
+      "stock": 45,
+      "sold": 2800,
+      "rating": 4.8,
+      "cover": "/images/totochan.webp",
+      "description": "Cuốn sách về phương pháp giáo dục tuyệt vời của trường Tomoe.",
+      "publisher": "NXB Văn Học",
+      "pages": 350,
+      "year": 2020,
+      "featured": false
+    },
+    {
+      "id": 28,
+      "title": "Sức Mạnh Của Thói Quen",
+      "author": "Charles Duhigg",
+      "price": 115000,
+      "originalPrice": 145000,
+      "categoryId": 6,
+      "stock": 37,
+      "sold": 2401,
+      "rating": 4.7,
+      "cover": "/images/sucmanh.png",
+      "description": "Khoa học đằng sau cách thói quen hoạt động và cách thay đổi chúng.",
+      "publisher": "NXB Kinh Tế",
+      "pages": 380,
+      "year": 2020,
+      "featured": true
+    },
+    {
+      "id": 10,
+      "title": "7 Thói Quen Của Người Thành Đạt",
+      "author": "Stephen R. Covey",
+      "price": 135000,
+      "originalPrice": 160000,
+      "categoryId": 2,
+      "stock": 40,
+      "sold": 2150,
+      "rating": 4.8,
+      "cover": "/images/7 thoi qune.webp",
+      "description": "Các thói quen cốt lõi để đạt được hiệu quả trong công việc và cuộc sống.",
+      "publisher": "NXB Tổng hợp TP.HCM",
+      "pages": 400,
+      "year": 2021,
+      "featured": false
+    },
+    {
+      "id": 7,
+      "title": "Tôi Tài Giỏi, Bạn Cũng Thế",
+      "author": "Adam Khoo",
+      "price": 110000,
+      "originalPrice": 140000,
+      "categoryId": 2,
+      "stock": 43,
+      "sold": 2102,
+      "rating": 4.6,
+      "cover": "/images/toitaigioibancxthe.webp",
+      "description": "Phương pháp học tập và phát triển bản thân hiệu quả từ triệu phú trẻ nhất Singapore.",
+      "publisher": "NXB Phụ Nữ",
+      "pages": 380,
+      "year": 2022,
+      "featured": true
+    },
+    {
+      "id": 25,
+      "title": "Không Gia Đình",
+      "author": "Hector Malot",
+      "price": 125000,
+      "originalPrice": 160000,
+      "categoryId": 5,
+      "stock": 35,
+      "sold": 1900,
+      "rating": 4.7,
+      "cover": "/images/khong-gia-dinh.jpg",
+      "description": "Hành trình lưu lạc đầy cảm động của cậu bé Rémi.",
+      "publisher": "NXB Kim Đồng",
+      "pages": 520,
+      "year": 2019,
+      "featured": false
+    },
+    {
+      "id": 19,
+      "title": "Những Tù Nhân Của Địa Lý",
+      "author": "Tim Marshall",
+      "price": 120000,
+      "originalPrice": 150000,
+      "categoryId": 4,
+      "stock": 40,
+      "sold": 1850,
+      "rating": 4.8,
+      "cover": "/images/tunhan.webp",
+      "description": "Bản đồ và địa lý đã định hình lịch sử và chính trị thế giới như thế nào.",
+      "publisher": "NXB Hội Nhà Văn",
+      "pages": 340,
+      "year": 2021,
+      "featured": false
+    },
+    {
+      "id": 2,
+      "title": "Cây Cam Ngọt Của Tôi",
+      "author": "José Mauro de Vasconcelos",
+      "price": 89000,
+      "originalPrice": 115000,
+      "categoryId": 1,
+      "stock": 40,
+      "sold": 1580,
+      "rating": 4.9,
+      "cover": "/images/caycamngot.webp",
+      "description": "Câu chuyện cảm động về tuổi thơ và tình người.",
+      "publisher": "NXB Hội Nhà Văn",
+      "pages": 272,
+      "year": 2022,
+      "featured": true
+    },
+    {
+      "id": 30,
+      "title": "Phi Lý Trí",
+      "author": "Dan Ariely",
+      "price": 130000,
+      "originalPrice": 165000,
+      "categoryId": 6,
+      "stock": 30,
+      "sold": 1560,
+      "rating": 4.6,
+      "cover": "/images/philitri.png",
+      "description": "Giải thích vì sao con người thường xuyên đưa ra những quyết định thiếu logic.",
+      "publisher": "NXB Trẻ",
+      "pages": 350,
+      "year": 2019,
+      "featured": false
+    },
+    {
+      "id": 18,
+      "title": "Việt Nam Sử Lược",
+      "author": "Trần Trọng Kim",
+      "price": 110000,
+      "originalPrice": 135000,
+      "categoryId": 4,
+      "stock": 35,
+      "sold": 1500,
+      "rating": 4.7,
+      "cover": "/images/VNamsuluoc.webp",
+      "description": "Cuốn sử thi tổng hợp chi tiết về các triều đại lịch sử Việt Nam.",
+      "publisher": "NXB Văn Học",
+      "pages": 600,
+      "year": 2018,
+      "featured": false
+    },
+    {
+      "id": 6,
+      "title": "Đắc Nhân Tâm",
+      "author": "Dale Carnegie",
+      "price": 85000,
+      "originalPrice": 120000,
+      "categoryId": 2,
+      "stock": 50,
+      "sold": 1250,
+      "rating": 4.8,
+      "cover": "/images/dacnhantam.jpg",
+      "description": "Cuốn sách kinh điển về nghệ thuật giao tiếp và tạo ảnh hưởng với mọi người.",
+      "publisher": "NXB Tổng hợp TP.HCM",
+      "pages": 320,
+      "year": 2020,
+      "featured": true
+    },
+    {
+      "id": 4,
+      "title": "Hai Số Phận",
+      "author": "Jeffrey Archer",
+      "price": 125000,
+      "originalPrice": 150000,
+      "categoryId": 1,
+      "stock": 25,
+      "sold": 1120,
+      "rating": 4.8,
+      "cover": "/images/haisophan.jpg",
+      "description": "Câu chuyện hấp dẫn về hai người đàn ông sinh cùng ngày nhưng có số phận trái ngược.",
+      "publisher": "NXB Văn Học",
+      "pages": 650,
+      "year": 2018,
+      "featured": false
+    },
+    {
+      "id": 20,
+      "title": "Chiến Tranh Tiền Tệ",
+      "author": "Song Hongbing",
+      "price": 135000,
+      "originalPrice": 165000,
+      "categoryId": 4,
+      "stock": 25,
+      "sold": 1100,
+      "rating": 4.6,
+      "cover": "/images/chientranhtiente.jpg",
+      "description": "Những bí ẩn về dòng tiền và các gia tộc thao túng lịch sử tài chính thế giới.",
+      "publisher": "NXB Trẻ",
+      "pages": 480,
+      "year": 2019,
+      "featured": false
+    },
+    {
+      "id": 1,
+      "title": "Nhà Giả Kim",
+      "author": "Paulo Coelho",
+      "price": 79000,
+      "originalPrice": 100000,
+      "categoryId": 1,
+      "stock": 34,
+      "sold": 981,
+      "rating": 4.7,
+      "cover": "/images/nhagiakim.jpg",
+      "description": "Hành trình theo đuổi giấc mơ của chàng trai trẻ Santiago.",
+      "publisher": "NXB Hội Nhà Văn",
+      "pages": 228,
+      "year": 2019,
+      "featured": true
+    },
+    {
+      "id": 5,
+      "title": "Trăm Năm Cô Đơn",
+      "author": "Gabriel García Márquez",
+      "price": 140000,
+      "originalPrice": 170000,
+      "categoryId": 1,
+      "stock": 18,
+      "sold": 930,
+      "rating": 4.9,
+      "cover": "/images/tram nam co don.jpg",
+      "description": "Kiệt tác văn học Mỹ Latinh về gia tộc Buendía.",
+      "publisher": "NXB Văn Học",
+      "pages": 450,
+      "year": 2021,
+      "featured": true
+    },
+    {
+      "id": 17,
+      "title": "Súng, Vi Trùng Và Thép",
+      "author": "Jared Diamond",
+      "price": 195000,
+      "originalPrice": 240000,
+      "categoryId": 4,
+      "stock": 18,
+      "sold": 920,
+      "rating": 4.8,
+      "cover": "/images/sung.webp",
+      "description": "Giải thích sự phát triển bất bình đẳng giữa các lục địa trong lịch sử.",
+      "publisher": "NXB Tri Thức",
+      "pages": 550,
+      "year": 2020,
+      "featured": true
+    },
+    {
+      "id": 12,
+      "title": "Lược Sử Thời Gian",
+      "author": "Stephen Hawking",
+      "price": 125000,
+      "originalPrice": 150000,
+      "categoryId": 3,
+      "stock": 25,
+      "sold": 890,
+      "rating": 4.8,
+      "cover": "/images/luocsutime.webp",
+      "description": "Hành trình khám phá từ Vụ Nổ Lớn đến các lỗ đen vũ trụ.",
+      "publisher": "NXB Trẻ",
+      "pages": 280,
+      "year": 2018,
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "Bắt Trẻ Đồng Xanh",
+      "author": "J.D. Salinger",
+      "price": 75000,
+      "originalPrice": 95000,
+      "categoryId": 1,
+      "stock": 30,
+      "sold": 850,
+      "rating": 4.5,
+      "cover": "/images/battredongxanh.jpg",
+      "description": "Tiểu thuyết kinh điển về sự nổi loạn của tuổi trẻ.",
+      "publisher": "NXB Văn Học",
+      "pages": 290,
+      "year": 2020,
+      "featured": false
+    },
+    {
+      "id": 27,
+      "title": "Tâm Lý Học Tội Phạm",
+      "author": "Stanton E. Samenow",
+      "price": 140000,
+      "originalPrice": 175000,
+      "categoryId": 6,
+      "stock": 20,
+      "sold": 850,
+      "rating": 4.6,
+      "cover": "/images/tamlyhoctoipham.jpg",
+      "description": "Phân tích tư duy và hành vi của những kẻ phạm tội.",
+      "publisher": "NXB Thế Giới",
+      "pages": 320,
+      "year": 2021,
+      "featured": true
+    },
+    {
+      "id": 16,
+      "title": "Sapiens: Lược Sử Loài Người",
+      "author": "Yuval Noah Harari",
+      "price": 189000,
+      "originalPrice": 250000,
+      "categoryId": 4,
+      "stock": 20,
+      "sold": 756,
+      "rating": 4.9,
+      "cover": "/images/sapiens.webp",
+      "description": "Cuốn sách giải thích tại sao loài người lại thống trị Trái Đất.",
+      "publisher": "NXB Tri Thức",
+      "pages": 560,
+      "year": 2021,
+      "featured": true
+    },
+    {
+      "id": 15,
+      "title": "Vũ Trụ (Cosmos)",
+      "author": "Carl Sagan",
+      "price": 170000,
+      "originalPrice": 210000,
+      "categoryId": 3,
+      "stock": 22,
+      "sold": 680,
+      "rating": 4.9,
+      "cover": "/images/vutru.jpg",
+      "description": "Một trong những cuốn sách khoa học bán chạy nhất mọi thời đại về vũ trụ.",
+      "publisher": "NXB Nhã Nam",
+      "pages": 460,
+      "year": 2021,
+      "featured": true
+    },
+    {
+      "id": 13,
+      "title": "Gen Vị Kỷ",
+      "author": "Richard Dawkins",
+      "price": 145000,
+      "originalPrice": 175000,
+      "categoryId": 3,
+      "stock": 15,
+      "sold": 540,
+      "rating": 4.6,
+      "cover": "/images/gen-vi-ky.webp",
+      "description": "Khám phá quá trình tiến hóa từ góc nhìn của các đoạn gen.",
+      "publisher": "NXB Tri Thức",
+      "pages": 420,
+      "year": 2020,
+      "featured": false
+    },
+    {
+      "id": 26,
+      "title": "Tư Duy Nhanh Và Chậm",
+      "author": "Daniel Kahneman",
+      "price": 165000,
+      "originalPrice": 220000,
+      "categoryId": 6,
+      "stock": 25,
+      "sold": 445,
+      "rating": 4.7,
+      "cover": "/images/tuduynhanhvacham.webp",
+      "description": "Khám phá hai hệ thống tư duy của con người.",
+      "publisher": "NXB Thế Giới",
+      "pages": 520,
+      "year": 2021,
+      "featured": false
+    },
+    {
+      "id": 14,
+      "title": "Nguồn Gốc Các Loài",
+      "author": "Charles Darwin",
+      "price": 160000,
+      "originalPrice": 190000,
+      "categoryId": 3,
+      "stock": 10,
+      "sold": 410,
+      "rating": 4.5,
+      "cover": "/images/nguongoccacloai.jpg",
+      "description": "Tác phẩm nền tảng của sinh học tiến hóa do Charles Darwin viết.",
+      "publisher": "NXB Tri Thức",
+      "pages": 500,
+      "year": 2019,
+      "featured": false
+    },
+    {
+      "id": 11,
+      "title": "Vũ Trụ Trong Vỏ Hạt Dẻ",
+      "author": "Stephen Hawking",
+      "price": 145000,
+      "originalPrice": 180000,
+      "categoryId": 3,
+      "stock": 15,
+      "sold": 320,
+      "rating": 4.5,
+      "cover": "/images/vutruhatde.jpg",
+      "description": "Stephen Hawking giải thích những bí ẩn của vũ trụ một cách đơn giản.",
+      "publisher": "NXB Trẻ",
+      "pages": 240,
+      "year": 2020,
+      "featured": false
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "userId": 2,
+      "items": [
+        {
+          "bookId": 1,
+          "quantity": 2,
+          "price": 79000
+        }
+      ],
+      "total": 158000,
+      "status": "delivered",
+      "address": "123 Nguyễn Huệ, Q1, TP.HCM",
+      "phone": "0901234567",
+      "createdAt": "2024-03-01"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "items": [
+        {
+          "bookId": 7,
+          "quantity": 2,
+          "price": 110000
+        },
+        {
+          "bookId": 9,
+          "quantity": 2,
+          "price": 85000
+        },
+        {
+          "bookId": 22,
+          "quantity": 2,
+          "price": 115000
+        }
+      ],
+      "total": 620000,
+      "status": "delivered",
+      "address": "đâsd",
+      "phone": "ádawd",
+      "createdAt": "2026-05-19"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "items": [
+        {
+          "bookId": 21,
+          "quantity": 4,
+          "price": 55000
+        }
+      ],
+      "total": 220000,
+      "status": "delivered",
+      "address": "ádasd",
+      "phone": "ắda",
+      "createdAt": "2026-05-19"
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "items": [
+        {
+          "bookId": 8,
+          "quantity": 13,
+          "price": 95000
+        }
+      ],
+      "subtotal": 1235000,
+      "discount": 50000,
+      "couponCode": "WELCOME10",
+      "total": 1185000,
+      "status": "cancelled",
+      "address": "asdasdasd",
+      "phone": "asdasdasd",
+      "createdAt": "2026-05-30",
+      "cancelReason": "ko muon mua nua"
+    },
+    {
+      "id": 5,
+      "userId": 1,
+      "items": [
+        {
+          "bookId": 22,
+          "quantity": 3,
+          "price": 115000
+        }
+      ],
+      "subtotal": 345000,
+      "discount": 0,
+      "couponCode": "",
+      "total": 345000,
+      "status": "shipping",
+      "address": "123 QUANG TRUNG ĐỒNG MAI HÀ NỘIs",
+      "phone": "0901234567",
+      "createdAt": "2026-05-31"
+    },
+    {
+      "id": 6,
+      "userId": 2,
+      "items": [
+        {
+          "bookId": 9,
+          "quantity": 1,
+          "price": 85000
+        },
+        {
+          "bookId": 28,
+          "quantity": 1,
+          "price": 115000
+        }
+      ],
+      "subtotal": 200000,
+      "discount": 0,
+      "couponCode": "",
+      "total": 200000,
+      "status": "delivered",
+      "address": "123 QUANG TRUNG ĐỒNG MAI HÀ NỘIs",
+      "phone": "0901234567",
+      "createdAt": "2026-06-03"
+    },
+    {
+      "id": 7,
+      "userId": 4,
+      "items": [
+        {
+          "bookId": 22,
+          "quantity": 1,
+          "price": 115000
+        },
+        {
+          "bookId": 8,
+          "quantity": 1,
+          "price": 95000
+        }
+      ],
+      "subtotal": 210000,
+      "discount": 21000,
+      "couponCode": "WELCOME10",
+      "total": 189000,
+      "status": "cancelled",
+      "address": "123 QUANG TRUNG ĐỒNG MAI HÀ NỘIs",
+      "phone": "0901234567",
+      "createdAt": "2026-06-03",
+      "cancelReason": "toi khong muon mua"
+    },
+    {
+      "id": 8,
+      "userId": 4,
+      "items": [
+        {
+          "bookId": 22,
+          "quantity": 1,
+          "price": 115000
+        },
+        {
+          "bookId": 22,
+          "quantity": 1,
+          "price": 115000
+        }
+      ],
+      "total": 230000,
+      "status": "processing",
+      "address": "124 Hà Đông",
+      "phone": "09123456",
+      "createdAt": "2026-06-03"
+    },
+    {
+      "id": 9,
+      "userId": 2,
+      "items": [
+        {
+          "bookId": 23,
+          "quantity": 1,
+          "price": 65000
+        },
+        {
+          "bookId": 9,
+          "quantity": 1,
+          "price": 85000
+        },
+        {
+          "bookId": 21,
+          "quantity": 1,
+          "price": 55000
+        }
+      ],
+      "subtotal": 205000,
+      "discount": 0,
+      "couponCode": "",
+      "total": 205000,
+      "status": "processing",
+      "address": "wewerweerweerwr",
+      "phone": "werwrwerwerw",
+      "createdAt": "2026-09-08"
+    }
+  ],
+  "coupons": [
+    {
+      "id": 1,
+      "code": "WELCOME10",
+      "type": "percent",
+      "value": 10,
+      "minOrder": 100000,
+      "maxDiscount": 50000,
+      "usageLimit": 0,
+      "used": 2,
+      "active": true,
+      "expiry": "2026-12-31",
+      "description": "Giảm 10% cho khách hàng mới (tối đa 50.000đ)"
+    },
+    {
+      "id": 2,
+      "code": "FREESHIP",
+      "type": "fixed",
+      "value": 30000,
+      "minOrder": 150000,
+      "maxDiscount": 0,
+      "usageLimit": 0,
+      "used": 0,
+      "active": true,
+      "expiry": "2026-12-31",
+      "description": "Giảm 30.000đ phí ship cho đơn từ 150.000đ"
+    },
+    {
+      "id": 3,
+      "code": "SACH50K",
+      "type": "fixed",
+      "value": 50000,
+      "minOrder": 300000,
+      "maxDiscount": 0,
+      "usageLimit": 100,
+      "used": 0,
+      "active": true,
+      "expiry": "2026-12-31",
+      "description": "Giảm ngay 50.000đ cho đơn hàng từ 300.000đ"
+    }
+  ],
+  "chats": [
+    {
+      "userId": 2,
+      "userName": "Nguyễn Văn A",
+      "messages": [
+        {
+          "from": "user",
+          "text": "alo",
+          "at": "2026-05-30T08:43:40.550Z"
+        },
+        {
+          "from": "admin",
+          "text": "CCCCCC",
+          "at": "2026-05-30T08:47:06.179Z"
+        }
+      ],
+      "updatedAt": "2026-05-30T08:47:06.179Z",
+      "unreadByAdmin": 0,
+      "unreadByUser": 0
+    },
+    {
+      "userId": 1,
+      "userName": "Admin",
+      "messages": [],
+      "updatedAt": "2026-05-30T08:47:47.067Z",
+      "unreadByAdmin": 0,
+      "unreadByUser": 0
+    },
+    {
+      "userId": 3,
+      "userName": "Hoàng Anh Tuấn",
+      "messages": [
+        {
+          "from": "user",
+          "text": "Chào bạn, mình đang có một vài vấn đề cần được giải đáp, bạn có thể giúp mình được không?",
+          "at": "2026-06-01T15:56:21.207Z"
+        },
+        {
+          "from": "admin",
+          "text": "Chào bạn, cảm ơn bạn đã tin tưởng D2TP Book! Bạn có thể cho mình biết vấn đề của bạn để mình có thể giúp đỡ không ạ?",
+          "at": "2026-06-01T15:57:45.599Z"
+        }
+      ],
+      "updatedAt": "2026-06-01T15:57:45.599Z",
+      "unreadByAdmin": 0,
+      "unreadByUser": 0
+    },
+    {
+      "userId": 4,
+      "userName": "dat",
+      "messages": [
+        {
+          "from": "user",
+          "text": "ban can ho tro",
+          "at": "2026-06-03T02:12:41.132Z"
+        },
+        {
+          "from": "admin",
+          "text": "shop co the ho tro gi cho ban a",
+          "at": "2026-06-03T02:22:24.876Z"
+        }
+      ],
+      "updatedAt": "2026-06-03T02:22:24.876Z",
+      "unreadByAdmin": 0,
+      "unreadByUser": 1
+    }
+  ],
+  "nextId": {
+    "user": 6,
+    "order": 10,
+    "coupon": 4
+  }
+}

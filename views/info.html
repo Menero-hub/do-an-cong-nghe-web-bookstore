@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thông tin &amp; Hỗ trợ - D2TP Book</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div>Chào mừng bạn đến với hệ thống nhà sách D2TP book!</div>
+    <div class="top-bar-links">
+      <a href="/promotions">Khuyến mãi</a>
+      <a href="/about">Hệ thống nhà sách</a>
+      <a href="#" onclick="ChatWidget.open(); return false;">Hỗ trợ khách hàng</a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-box">
+        <div class="logo-d2t">D2TP</div>
+        <div class="logo-book">BOOK</div>
+      </div>
+    </a>
+    <div class="header-search">
+      <input id="nav-search" type="text" placeholder="Tìm kiếm sách, tác giả, nhà xuất bản...">
+      <button>🔍</button>
+    </div>
+    <div class="header-actions">
+      <div class="user-menu-wrap" id="user-menu" style="display:none;">
+        <a href="#" class="header-btn" onclick="toggleDropdown(); return false;">
+          <span class="icon">😊</span>
+          <span id="user-name">Tài khoản</span>
+        </a>
+        <div class="user-dropdown" id="user-dropdown">
+          <a href="/orders">📦 Đơn hàng của tôi</a>
+          <a href="/admin" class="admin-link" style="display:none;">⚙️ Quản trị hệ thống</a>
+          <a href="#" class="danger" onclick="Auth.logout(); return false;">🚪 Đăng xuất</a>
+        </div>
+      </div>
+      <a href="/login" class="header-btn" id="login-link">
+        <span class="icon">👤</span>
+        <span>Đăng nhập</span>
+      </a>
+      <a href="/cart" class="header-btn cart-btn">
+        <span class="icon">🛒</span>
+        <span>Giỏ hàng</span>
+        <span class="cart-count" id="cart-badge" style="display:none">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <a href="/">Trang chủ</a> / <span id="crumb">Thông tin</span>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="info-tabs" id="info-tabs"></div>
+  <div class="content-card" id="info-content"></div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div>© 2024 D2TP book. Tất cả các quyền được bảo lưu.</div>
+      <div>Được xây dựng với ❤️ tại Việt Nam.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+<script>
+const TOPICS = {
+  'dieu-khoan': {
+    title: 'Điều khoản sử dụng',
+    html: `
+      <h1>📋 Điều khoản sử dụng</h1>
+      <p>Khi truy cập và mua sắm tại D2TP Book, bạn đồng ý tuân thủ các điều khoản dưới đây.</p>
+      <h2>1. Tài khoản</h2>
+      <p>Bạn chịu trách nhiệm bảo mật thông tin tài khoản và mật khẩu của mình. Mọi hoạt động phát sinh từ tài khoản được xem là do bạn thực hiện.</p>
+      <h2>2. Đặt hàng</h2>
+      <p>Đơn hàng chỉ được xác nhận sau khi bạn hoàn tất bước thanh toán. D2TP Book có quyền từ chối hoặc hủy đơn trong trường hợp hết hàng hoặc thông tin không hợp lệ.</p>
+      <h2>3. Quyền sở hữu nội dung</h2>
+      <p>Toàn bộ nội dung, hình ảnh, logo trên website thuộc quyền sở hữu của D2TP Book và được bảo vệ bởi luật bản quyền.</p>`
+  },
+  'bao-mat': {
+    title: 'Chính sách bảo mật',
+    html: `
+      <h1>🔒 Chính sách bảo mật</h1>
+      <p>D2TP Book cam kết bảo vệ thông tin cá nhân của khách hàng.</p>
+      <h2>Thông tin chúng tôi thu thập</h2>
+      <ul><li>Họ tên, email, số điện thoại, địa chỉ giao hàng</li><li>Lịch sử đơn hàng và tương tác trên website</li></ul>
+      <h2>Mục đích sử dụng</h2>
+      <ul><li>Xử lý và giao đơn hàng</li><li>Chăm sóc khách hàng và hỗ trợ</li><li>Gửi thông tin khuyến mãi (khi được đồng ý)</li></ul>
+      <h2>Cam kết</h2>
+      <p>Chúng tôi không bán, trao đổi thông tin cá nhân của bạn cho bên thứ ba vì mục đích thương mại.</p>`
+  },
+  'trung-tam': {
+    title: 'Hệ thống trung tâm',
+    html: `
+      <h1>🏢 Hệ thống trung tâm</h1>
+      <p>D2TP Book phục vụ khách hàng trên toàn quốc thông qua các trung tâm phân phối:</p>
+      <h2>Miền Bắc</h2>
+      <p>Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội · ĐT: 024 1234 5678</p>
+      <h2>Miền Nam</h2>
+      <p>268 Lý Thường Kiệt, Quận 10, TP. Hồ Chí Minh · ĐT: 028 8765 4321</p>
+      <h2>Miền Trung</h2>
+      <p>54 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng · ĐT: 0236 246 8101</p>`
+  },
+  'doi-tra': {
+    title: 'Chính sách đổi trả',
+    html: `
+      <h1>🔄 Chính sách đổi trả</h1>
+      <p>D2TP Book hỗ trợ đổi trả trong vòng <strong>7 ngày</strong> kể từ khi nhận hàng.</p>
+      <h2>Điều kiện đổi trả</h2>
+      <ul><li>Sách bị lỗi in ấn, rách, hư hỏng do vận chuyển</li><li>Giao sai sản phẩm so với đơn đặt</li><li>Sách còn nguyên vẹn, chưa qua sử dụng</li></ul>
+      <h2>Quy trình</h2>
+      <p>Liên hệ hotline 1900 1234 hoặc trò chuyện trực tuyến để được hướng dẫn gửi trả và hoàn tiền/đổi sản phẩm mới.</p>`
+  },
+  'van-chuyen': {
+    title: 'Phương thức vận chuyển',
+    html: `
+      <h1>🚚 Phương thức vận chuyển</h1>
+      <p>Chúng tôi giao hàng đến toàn bộ 63 tỉnh thành trên cả nước.</p>
+      <h2>Thời gian giao hàng</h2>
+      <ul><li>Nội thành Hà Nội &amp; TP.HCM: 1 - 2 ngày</li><li>Các tỉnh thành khác: 3 - 5 ngày</li></ul>
+      <h2>Phí vận chuyển</h2>
+      <ul><li><strong>Miễn phí</strong> cho đơn hàng từ 300.000đ</li><li>Đơn dưới 300.000đ: phí cố định 30.000đ</li></ul>`
+  },
+  'thanh-toan': {
+    title: 'Phương thức thanh toán',
+    html: `
+      <h1>💳 Phương thức thanh toán</h1>
+      <p>D2TP Book hỗ trợ các hình thức thanh toán linh hoạt:</p>
+      <h2>Thanh toán khi nhận hàng (COD)</h2>
+      <p>Bạn kiểm tra hàng và thanh toán tiền mặt trực tiếp cho nhân viên giao hàng.</p>
+      <h2>Mã giảm giá</h2>
+      <p>Đừng quên áp dụng <a href="/promotions" style="color:var(--red);font-weight:700;">mã giảm giá</a> tại bước thanh toán để được hưởng ưu đãi.</p>`
+  },
+  'faq': {
+    title: 'Câu hỏi thường gặp',
+    html: `
+      <h1>❓ Câu hỏi thường gặp</h1>
+      <h3>Làm sao để đặt hàng?</h3>
+      <p>Thêm sách vào giỏ hàng, nhấn "Thanh toán", điền thông tin giao hàng và xác nhận đơn.</p>
+      <h3>Tôi có thể áp dụng mã giảm giá ở đâu?</h3>
+      <p>Tại trang thanh toán, nhập mã vào ô "Mã giảm giá" và nhấn "Áp dụng".</p>
+      <h3>Làm sao để theo dõi đơn hàng?</h3>
+      <p>Đăng nhập và vào mục <a href="/orders" style="color:var(--red);font-weight:700;">Đơn hàng của tôi</a> để xem trạng thái.</p>
+      <h3>Tôi cần hỗ trợ thêm?</h3>
+      <p>Nhấn nút <a href="#" onclick="ChatWidget.open();return false;" style="color:var(--red);font-weight:700;">trò chuyện 💬</a> ở góc màn hình hoặc gọi 1900 1234.</p>`
+  },
+};
+const ORDER = ['dieu-khoan','bao-mat','trung-tam','doi-tra','van-chuyen','thanh-toan','faq'];
+
+function renderInfo(topic) {
+  if (!TOPICS[topic]) topic = 'dieu-khoan';
+  document.getElementById('info-tabs').innerHTML = ORDER.map(k =>
+    `<a class="info-tab ${k===topic?'active':''}" href="/info?topic=${k}">${TOPICS[k].title}</a>`).join('');
+  document.getElementById('info-content').innerHTML = TOPICS[topic].html;
+  document.getElementById('crumb').textContent = TOPICS[topic].title;
+  document.title = TOPICS[topic].title + ' - D2TP Book';
+}
+
+const params = new URLSearchParams(location.search);
+renderInfo(params.get('topic') || 'dieu-khoan');
+</script>
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản trị - D2TP book</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { overflow-x: hidden; }
+    .admin-layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 64px); }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-box">
+        <div class="logo-d2t">D2TP</div>
+        <div class="logo-book">BOOK</div>
+      </div>
+    </a>
+    <div style="margin-left:20px; font-weight:bold; color:white; font-size:16px;">Hệ Thống Quản Trị</div>
+    <div class="header-actions">
+      <div class="user-menu-wrap" id="user-menu" style="display:block;">
+        <a href="#" class="header-btn" onclick="toggleDropdown(); return false;">
+          <span class="icon">⚙️</span>
+          <span id="user-name">Admin</span>
+        </a>
+        <div class="user-dropdown" id="user-dropdown">
+          <a href="/">🏠 Về trang chủ</a>
+          <a href="#" class="danger" onclick="Auth.logout(); return false;">🚪 Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="admin-wrap">
+  <aside class="admin-sidebar">
+    <div class="aside-nav">
+      <a href="#" class="active" onclick="showSection('dashboard', this)">📊 Tổng quan</a>
+      <a href="#" onclick="showSection('books', this)">📚 Quản lý sách</a>
+      <a href="#" onclick="showSection('categories', this)">🏷️ Danh mục</a>
+      <a href="#" onclick="showSection('orders', this)">📦 Đơn hàng</a>
+      <a href="#" onclick="showSection('users', this)">👥 Tài khoản</a>
+      <a href="#" onclick="showSection('coupons', this)">🎁 Mã giảm giá</a>
+      <a href="#" onclick="showSection('chat', this)">💬 Trò chuyện <span id="chat-nav-badge" class="chat-nav-badge" style="display:none;">0</span></a>
+    </div>
+  </aside>
+
+  <div class="admin-body">
+
+    <div class="admin-sec active" id="section-dashboard">
+      <h2 class="admin-sec-title">Tổng quan hệ thống</h2>
+      <div class="stats-row" id="stats-grid">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+      <div class="table-box">
+        <div class="table-toolbar" style="border-bottom: 2px solid var(--red);">
+          <strong style="color:var(--red);">📦 5 Đơn hàng gần nhất</strong>
+        </div>
+        <div id="recent-orders"></div>
+      </div>
+    </div>
+
+    <div class="admin-sec" id="section-books">
+      <h2 class="admin-sec-title">Quản lý sách</h2>
+      <div class="table-box">
+        <div class="table-toolbar">
+          <input type="text" id="book-search" placeholder="Tìm kiếm sách..." oninput="filterBooks()">
+          <button class="btn-create" onclick="openBookModal()">+ Thêm sách mới</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="tbl">
+            <thead><tr><th>Bìa</th><th>Tên sách</th><th>Tác giả</th><th>Danh mục</th><th>Giá</th><th>Kho</th><th>Thao tác</th></tr></thead>
+            <tbody id="books-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-sec" id="section-categories">
+      <h2 class="admin-sec-title">Quản lý danh mục</h2>
+      <div class="table-box">
+        <div class="table-toolbar">
+          <button class="btn-create" onclick="openCatModal()">+ Thêm danh mục</button>
+        </div>
+        <table class="tbl">
+          <thead><tr><th>ID</th><th>Tên danh mục</th><th>Mô tả</th><th>Thao tác</th></tr></thead>
+          <tbody id="cats-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="admin-sec" id="section-orders">
+      <h2 class="admin-sec-title">Quản lý đơn hàng</h2>
+      <div class="table-box">
+        <div class="table-toolbar">
+          <select onchange="filterOrderStatus(this.value)" style="padding:6px; border:1px solid var(--border); border-radius:4px;">
+            <option value="">Tất cả trạng thái</option>
+            <option value="processing">Đang xử lý</option>
+            <option value="shipping">Đang giao</option>
+            <option value="delivered">Đã giao</option>
+            <option value="cancelled">Đã hủy</option>
+          </select>
+          <button class="btn-create" onclick="openOrderModal()" style="margin-left:8px;">+ Thêm đơn hàng</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="tbl">
+            <thead><tr><th>Mã</th><th>Khách hàng</th><th>Chi tiết</th><th>Tổng tiền</th><th>Ngày đặt</th><th>Trạng thái hiện tại</th><th>Cập nhật trạng thái</th></tr></thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-sec" id="section-users">
+      <h2 class="admin-sec-title">Quản lý tài khoản</h2>
+      <div class="table-box">
+        <div class="table-toolbar">
+          <button class="btn-create" onclick="openUserModal()">+ Thêm tài khoản</button>
+        </div>
+        <table class="tbl">
+          <thead><tr><th>ID</th><th>Tên người dùng</th><th>Email</th><th>Phân quyền</th><th>Ngày tham gia</th><th>Thao tác</th></tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="admin-sec" id="section-coupons">
+      <h2 class="admin-sec-title">Quản lý mã giảm giá</h2>
+      <div class="table-box">
+        <div class="table-toolbar">
+          <button class="btn-create" onclick="openCouponModal()">+ Thêm mã giảm giá</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="tbl">
+            <thead><tr><th>Mã</th><th>Loại</th><th>Giá trị</th><th>Đơn tối thiểu</th><th>Đã dùng / Giới hạn</th><th>HSD</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+            <tbody id="coupons-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-sec" id="section-chat">
+      <h2 class="admin-sec-title">Trò chuyện với khách hàng</h2>
+      <div class="chat-admin-layout">
+        <div class="chat-admin-list" id="chat-admin-list">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+        <div class="chat-admin-conv" id="chat-admin-conv">
+          <div class="chat-admin-empty">← Chọn một khách hàng để bắt đầu trò chuyện</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="overlay" id="book-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="book-modal-title">Thêm sách mới</h3>
+      <button class="modal-close" onclick="closeModal('book-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="book-id">
+      <div class="grid-2">
+        <div class="form-group" style="grid-column:1/-1;"><label>Tên sách *</label><input type="text" id="book-title"></div>
+        <div class="form-group"><label>Tác giả *</label><input type="text" id="book-author"></div>
+        <div class="form-group"><label>Danh mục</label><select id="book-cat"></select></div>
+        <div class="form-group"><label>Giá bán (đ) *</label><input type="number" id="book-price"></div>
+        <div class="form-group"><label>Giá gốc (đ)</label><input type="number" id="book-orig-price"></div>
+        <div class="form-group"><label>Tồn kho</label><input type="number" id="book-stock" value="10"></div>
+        <div class="form-group"><label>Nhà XB</label><input type="text" id="book-pub"></div>
+        <div class="form-group"><label>Số trang</label><input type="number" id="book-pages"></div>
+        <div class="form-group"><label>Năm XB</label><input type="number" id="book-year"></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Link ảnh bìa</label><input type="text" id="book-cover" placeholder="https://..."></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Mô tả chi tiết</label><textarea id="book-desc"></textarea></div>
+        <div class="form-group" style="grid-column:1/-1;"><label style="display:inline-flex; align-items:center; gap:8px;"><input type="checkbox" id="book-featured" style="width:auto;"> Sách nổi bật (Hiện trang chủ)</label></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel-modal" onclick="closeModal('book-modal')">Hủy bỏ</button>
+      <button class="btn-save-modal" onclick="saveBook()">Lưu dữ liệu</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="cat-modal">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-head">
+      <h3 id="cat-modal-title">Thêm danh mục</h3>
+      <button class="modal-close" onclick="closeModal('cat-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cat-id">
+      <div class="form-group"><label>Tên danh mục *</label><input type="text" id="cat-name"></div>
+      <div class="form-group"><label>Đường dẫn tĩnh (Slug)</label><input type="text" id="cat-slug" placeholder="vd: van-hoc"></div>
+      <div class="form-group"><label>Mô tả</label><input type="text" id="cat-desc"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel-modal" onclick="closeModal('cat-modal')">Hủy</button>
+      <button class="btn-save-modal" onclick="saveCat()">Lưu danh mục</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tài khoản -->
+<div class="overlay" id="user-modal">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-head">
+      <h3 id="user-modal-title">Thêm tài khoản</h3>
+      <button class="modal-close" onclick="closeModal('user-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="user-id">
+      <div class="form-group"><label>Họ tên *</label><input type="text" id="user-name-inp"></div>
+      <div class="form-group"><label>Email *</label><input type="email" id="user-email-inp"></div>
+      <div class="form-group"><label>Mật khẩu <span id="user-pass-hint" style="color:var(--muted);font-size:12px;">(để trống nếu không đổi)</span></label><input type="password" id="user-pass-inp" placeholder="Nhập mật khẩu..."></div>
+      <div class="form-group"><label>Phân quyền</label>
+        <select id="user-role-inp" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;">
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel-modal" onclick="closeModal('user-modal')">Hủy</button>
+      <button class="btn-save-modal" onclick="saveUser()">Lưu tài khoản</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Thêm đơn hàng -->
+<div class="overlay" id="order-modal">
+  <div class="modal-box" style="max-width:560px;">
+    <div class="modal-head">
+      <h3>Thêm đơn hàng mới</h3>
+      <button class="modal-close" onclick="closeModal('order-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Khách hàng *</label>
+        <select id="order-user-sel" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;"></select>
+      </div>
+      <div class="form-group"><label>Địa chỉ giao hàng *</label><input type="text" id="order-address-inp"></div>
+      <div class="form-group"><label>Số điện thoại *</label><input type="text" id="order-phone-inp"></div>
+      <div class="form-group"><label>Sách & Số lượng</label>
+        <div id="order-items-wrap">
+          <div class="order-item-row" style="display:flex;gap:8px;margin-bottom:8px;">
+            <select class="ord-book-sel" style="flex:1;padding:6px;border:1px solid var(--border);border-radius:4px;"></select>
+            <input type="number" class="ord-qty-inp" value="1" min="1" style="width:70px;padding:6px;border:1px solid var(--border);border-radius:4px;">
+            <button onclick="this.closest('.order-item-row').remove()" style="padding:4px 8px;background:#fee2e2;color:#b91c1c;border:none;border-radius:4px;cursor:pointer;">✕</button>
+          </div>
+        </div>
+        <button onclick="addOrderItemRow()" style="margin-top:4px;padding:5px 12px;background:var(--red);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;">+ Thêm sách</button>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel-modal" onclick="closeModal('order-modal')">Hủy</button>
+      <button class="btn-save-modal" onclick="saveOrder()">Tạo đơn hàng</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Mã giảm giá -->
+<div class="overlay" id="coupon-modal">
+  <div class="modal-box" style="max-width:480px;">
+    <div class="modal-head">
+      <h3 id="coupon-modal-title">Thêm mã giảm giá</h3>
+      <button class="modal-close" onclick="closeModal('coupon-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="coupon-id">
+      <div class="grid-2">
+        <div class="form-group"><label>Mã code *</label><input type="text" id="coupon-code" placeholder="VD: SALE10" style="text-transform:uppercase;"></div>
+        <div class="form-group"><label>Loại giảm</label>
+          <select id="coupon-type">
+            <option value="percent">Phần trăm (%)</option>
+            <option value="fixed">Số tiền cố định (đ)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Giá trị *</label><input type="number" id="coupon-value" placeholder="VD: 10 hoặc 50000"></div>
+        <div class="form-group"><label>Giảm tối đa (đ)</label><input type="number" id="coupon-max" placeholder="0 = không giới hạn"></div>
+        <div class="form-group"><label>Đơn tối thiểu (đ)</label><input type="number" id="coupon-min" placeholder="0"></div>
+        <div class="form-group"><label>Giới hạn lượt dùng</label><input type="number" id="coupon-limit" placeholder="0 = không giới hạn"></div>
+        <div class="form-group"><label>Ngày hết hạn</label><input type="date" id="coupon-expiry"></div>
+        <div class="form-group"><label>Trạng thái</label>
+          <select id="coupon-active">
+            <option value="true">Đang hoạt động</option>
+            <option value="false">Tạm dừng</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Mô tả</label><input type="text" id="coupon-desc" placeholder="Mô tả ngắn hiển thị cho khách"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel-modal" onclick="closeModal('coupon-modal')">Hủy</button>
+      <button class="btn-save-modal" onclick="saveCoupon()">Lưu mã</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+if (!Auth.isLoggedIn() || !Auth.isAdmin()) window.location.href = '/login';
+
+let allBooks = [], allOrders = [], allCats = [], allUsers = [];
+
+function showSection(name, el) {
+  document.querySelectorAll('.admin-sec').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.aside-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  el.classList.add('active');
+  if (name === 'books') loadAdminBooks();
+  if (name === 'categories') loadAdminCats();
+  if (name === 'orders') loadAdminOrders();
+  if (name === 'users') loadAdminUsers();
+  if (name === 'coupons') loadAdminCoupons();
+  if (name === 'chat') loadChatList();
+  return false;
+}
+
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// Dashboard
+async function loadDashboard() {
+  const [books, orders, users] = await Promise.all([api('GET','/api/books'), api('GET','/api/orders'), api('GET','/api/users')]);
+  allBooks = books; allOrders = orders; allUsers = users;
+  const totalRevenue = orders.filter(o => o.status === 'delivered').reduce((s,o) => s + o.total, 0);
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-box"><div class="sb-icon">📚</div><div class="sb-val">${books.length}</div><div class="sb-label">Sách trong kho</div></div>
+    <div class="stat-box"><div class="sb-icon">📦</div><div class="sb-val">${orders.length}</div><div class="sb-label">Tổng đơn hàng</div></div>
+    <div class="stat-box"><div class="sb-icon">👥</div><div class="sb-val">${users.length}</div><div class="sb-label">Tài khoản User</div></div>
+    <div class="stat-box"><div class="sb-icon">💰</div><div class="sb-val">${(totalRevenue/1000000).toFixed(1)}M</div><div class="sb-label">Doanh thu</div></div>`;
+
+  document.getElementById('recent-orders').innerHTML = `
+    <table class="tbl">
+      <tbody>${orders.slice(-5).reverse().map(o => `
+        <tr>
+          <td><strong style="color:var(--text);">#${o.id}</strong></td>
+          <td>${o.user?.name || 'Khách ẩn danh'}</td>
+          <td style="color:var(--red); font-weight:700;">${fmt.price(o.total)}</td>
+          <td><span class="status-badge ${fmt.statusClass(o.status)}">${fmt.status(o.status)}</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+// Books
+async function loadAdminBooks() {
+  allBooks = await api('GET', '/api/books');
+  allCats = await api('GET', '/api/categories');
+  renderBooksTable(allBooks);
+}
+
+function filterBooks() {
+  const q = document.getElementById('book-search').value.toLowerCase();
+  renderBooksTable(allBooks.filter(b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q)));
+}
+
+function renderBooksTable(books) {
+  document.getElementById('books-tbody').innerHTML = books.map(b => {
+    const cat = allCats.find(c => c.id === b.categoryId);
+    return `<tr>
+      <td><img src="${b.cover}" style="width:36px; height:48px; object-fit:cover; border-radius:3px; border:1px solid var(--border);" onerror="this.style.display='none'"></td>
+      <td style="font-weight:600; max-width:200px;">${b.title}</td>
+      <td style="color:var(--muted);">${b.author}</td>
+      <td>${cat?.name || '-'}</td>
+      <td style="color:var(--red); font-weight:600;">${fmt.price(b.price)}</td>
+      <td>${b.stock}</td>
+      <td>
+        <button class="tbtn tbtn-edit" onclick="editBook(${b.id})">Sửa</button>
+        <button class="tbtn tbtn-del" onclick="deleteBook(${b.id})" style="margin-left:4px;">Xóa</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openBookModal(book) {
+  document.getElementById('book-modal-title').textContent = book ? 'Sửa thông tin sách' : 'Thêm sách mới';
+  document.getElementById('book-cat').innerHTML = allCats.map(c => `<option value="${c.id}" ${book?.categoryId === c.id ? 'selected' : ''}>${c.name}</option>`).join('');
+  ['id','title','author','price','stock','cover','desc','pub','pages','year'].forEach(f => {
+    const el = document.getElementById('book-'+f);
+    if (el) el.value = book?.[f === 'desc' ? 'description' : f === 'pub' ? 'publisher' : f] || '';
+  });
+  document.getElementById('book-orig-price').value = book?.originalPrice || '';
+  document.getElementById('book-featured').checked = !!book?.featured;
+  openModal('book-modal');
+}
+
+async function editBook(id) { openBookModal(await api('GET', `/api/books/${id}`)); }
+
+async function saveBook() {
+  const id = document.getElementById('book-id').value;
+  const data = {
+    title: document.getElementById('book-title').value, author: document.getElementById('book-author').value,
+    price: +document.getElementById('book-price').value, originalPrice: +document.getElementById('book-orig-price').value || null,
+    categoryId: +document.getElementById('book-cat').value, stock: +document.getElementById('book-stock').value,
+    cover: document.getElementById('book-cover').value, description: document.getElementById('book-desc').value,
+    publisher: document.getElementById('book-pub').value, pages: +document.getElementById('book-pages').value,
+    year: +document.getElementById('book-year').value, featured: document.getElementById('book-featured').checked,
+  };
+  try {
+    if (id) await api('PUT', `/api/books/${id}`, data);
+    else await api('POST', '/api/books', data);
+    closeModal('book-modal'); Toast.show('✅ Đã lưu sách!', 'success'); loadAdminBooks();
+  } catch (e) { Toast.show(e.message, 'error'); }
+}
+
+async function deleteBook(id) { if (confirm('Chắc chắn xóa sách này?')) { await api('DELETE', `/api/books/${id}`); Toast.show('Đã xóa sách'); loadAdminBooks(); } }
+
+// Categories
+async function loadAdminCats() {
+  allCats = await api('GET', '/api/categories');
+  document.getElementById('cats-tbody').innerHTML = allCats.map(c => `
+    <tr>
+      <td>${c.id}</td><td style="font-weight:600;">${c.name}</td><td style="color:var(--muted);">${c.description}</td>
+      <td>
+        <button class="tbtn tbtn-edit" onclick="editCat(${c.id})">Sửa</button>
+        <button class="tbtn tbtn-del" onclick="deleteCat(${c.id})" style="margin-left:4px;">Xóa</button>
+      </td>
+    </tr>`).join('');
+}
+function openCatModal(cat) {
+  document.getElementById('cat-modal-title').textContent = cat ? 'Sửa danh mục' : 'Thêm danh mục';
+  document.getElementById('cat-id').value = cat?.id || ''; document.getElementById('cat-name').value = cat?.name || '';
+  document.getElementById('cat-slug').value = cat?.slug || ''; document.getElementById('cat-desc').value = cat?.description || '';
+  openModal('cat-modal');
+}
+function editCat(id) { openCatModal(allCats.find(c => c.id === id)); }
+async function saveCat() {
+  const id = document.getElementById('cat-id').value;
+  const data = { name: document.getElementById('cat-name').value, slug: document.getElementById('cat-slug').value, description: document.getElementById('cat-desc').value };
+  try { if (id) await api('PUT', `/api/categories/${id}`, data); else await api('POST', '/api/categories', data); closeModal('cat-modal'); Toast.show('✅ Đã lưu!', 'success'); loadAdminCats(); } catch (e) { Toast.show(e.message, 'error'); }
+}
+async function deleteCat(id) { if (confirm('Xóa danh mục này?')) { await api('DELETE', `/api/categories/${id}`); Toast.show('Đã xóa'); loadAdminCats(); } }
+
+// Orders
+async function loadAdminOrders() { allOrders = await api('GET', '/api/orders'); renderOrdersTable(allOrders); }
+function filterOrderStatus(st) { renderOrdersTable(st ? allOrders.filter(o => o.status === st) : allOrders); }
+function renderOrdersTable(orders) {
+  document.getElementById('orders-tbody').innerHTML = orders.map(o => `
+    <tr>
+      <td style="font-weight:700;">#${o.id}</td>
+      <td><strong>${o.user?.name || '-'}</strong><br><span style="color:var(--muted);font-size:11px;">${o.phone || ''}</span></td>
+      <td style="font-size:11px; color:var(--text2); max-width:200px;">${o.items?.map(i => `${i.book?.title} (x${i.quantity})`).join('<br>')}</td>
+      <td style="color:var(--red); font-weight:700;">${fmt.price(o.total)}</td>
+      <td style="color:var(--muted);">${fmt.date(o.createdAt)}</td>
+      <td><span class="status-badge ${fmt.statusClass(o.status)}">${fmt.status(o.status)}</span></td>
+      <td>
+        <select onchange="updateOrderStatus(${o.id}, this.value)" style="padding:4px 8px; border:1px solid var(--border); border-radius:4px;">
+          ${['processing','shipping','delivered','cancelled'].map(s => `<option value="${s}" ${o.status===s?'selected':''}>${fmt.status(s)}</option>`).join('')}
+        </select>
+      </td>
+    </tr>`).join('');
+}
+async function updateOrderStatus(id, status) { await api('PUT', `/api/orders/${id}`, { status }); Toast.show('✅ Đã cập nhật', 'success'); loadAdminOrders(); }
+
+// Users
+async function loadAdminUsers() {
+  allUsers = await api('GET', '/api/users');
+  document.getElementById('users-tbody').innerHTML = allUsers.map(u => `
+    <tr>
+      <td>${u.id}</td><td style="font-weight:600;">${u.name}</td><td style="color:var(--muted);">${u.email}</td>
+      <td><span class="status-badge" style="${u.role==='admin'?'background:#fef3c7;color:#92400e;':'background:#d1fae5;color:#065f46;'}">${u.role.toUpperCase()}</span></td>
+      <td style="color:var(--muted);">${fmt.date(u.createdAt)}</td>
+      <td>
+        <button class="tbtn tbtn-edit" onclick="editUser(${u.id})">Sửa</button>
+        <button class="tbtn tbtn-del" onclick="deleteUser(${u.id})" style="margin-left:4px;" ${u.role==='admin'?'disabled':''}>Xóa</button>
+      </td>
+    </tr>`).join('');
+}
+
+function openUserModal(user) {
+  document.getElementById('user-modal-title').textContent = user ? 'Cập nhật tài khoản' : 'Thêm tài khoản';
+  document.getElementById('user-id').value = user?.id || '';
+  document.getElementById('user-name-inp').value = user?.name || '';
+  document.getElementById('user-email-inp').value = user?.email || '';
+  document.getElementById('user-pass-inp').value = '';
+  document.getElementById('user-role-inp').value = user?.role || 'user';
+  document.getElementById('user-pass-hint').style.display = user ? 'inline' : 'none';
+  openModal('user-modal');
+}
+
+function editUser(id) { openUserModal(allUsers.find(u => u.id === id)); }
+
+async function saveUser() {
+  const id = document.getElementById('user-id').value;
+  const name = document.getElementById('user-name-inp').value.trim();
+  const email = document.getElementById('user-email-inp').value.trim();
+  const pass = document.getElementById('user-pass-inp').value;
+  const role = document.getElementById('user-role-inp').value;
+  if (!name || !email) return Toast.show('Vui lòng điền đầy đủ thông tin!', 'error');
+  try {
+    if (id) {
+      const data = { name, email, role };
+      if (pass) data.password = pass;
+      await api('PUT', `/api/users/${id}`, data);
+      Toast.show('✅ Đã cập nhật tài khoản!', 'success');
+    } else {
+      if (!pass) return Toast.show('Mật khẩu không được để trống!', 'error');
+      await api('POST', '/api/users', { name, email, password: pass, role });
+      Toast.show('✅ Đã thêm tài khoản!', 'success');
+    }
+    closeModal('user-modal'); loadAdminUsers();
+  } catch (e) { Toast.show(e.message, 'error'); }
+}
+
+async function deleteUser(id) { if (confirm('Xóa người dùng này?')) { await api('DELETE', `/api/users/${id}`); Toast.show('Đã xóa'); loadAdminUsers(); } }
+
+// Order modal
+async function openOrderModal() {
+  if (!allUsers.length) allUsers = await api('GET', '/api/users');
+  if (!allBooks.length) allBooks = await api('GET', '/api/books');
+  document.getElementById('order-user-sel').innerHTML = allUsers.filter(u=>u.role!=='admin').map(u=>`<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
+  document.getElementById('order-address-inp').value = '';
+  document.getElementById('order-phone-inp').value = '';
+  const wrap = document.getElementById('order-items-wrap');
+  wrap.innerHTML = '';
+  addOrderItemRow();
+  openModal('order-modal');
+}
+
+function addOrderItemRow() {
+  const wrap = document.getElementById('order-items-wrap');
+  const row = document.createElement('div');
+  row.className = 'order-item-row';
+  row.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;';
+  row.innerHTML = `
+    <select class="ord-book-sel" style="flex:1;padding:6px;border:1px solid var(--border);border-radius:4px;">
+      ${allBooks.map(b=>`<option value="${b.id}">${b.title} - ${fmt.price(b.price)}</option>`).join('')}
+    </select>
+    <input type="number" class="ord-qty-inp" value="1" min="1" style="width:70px;padding:6px;border:1px solid var(--border);border-radius:4px;">
+    <button onclick="this.closest('.order-item-row').remove()" style="padding:4px 8px;background:#fee2e2;color:#b91c1c;border:none;border-radius:4px;cursor:pointer;">✕</button>`;
+  wrap.appendChild(row);
+}
+
+async function saveOrder() {
+  const userId = +document.getElementById('order-user-sel').value;
+  const address = document.getElementById('order-address-inp').value.trim();
+  const phone = document.getElementById('order-phone-inp').value.trim();
+  if (!address || !phone) return Toast.show('Vui lòng điền địa chỉ và số điện thoại!', 'error');
+  const rows = document.querySelectorAll('#order-items-wrap .order-item-row');
+  if (!rows.length) return Toast.show('Thêm ít nhất 1 sách!', 'error');
+  const items = Array.from(rows).map(r => ({
+    bookId: +r.querySelector('.ord-book-sel').value,
+    quantity: +r.querySelector('.ord-qty-inp').value
+  }));
+  try {
+    await api('POST', '/api/orders/admin', { userId, items, address, phone });
+    Toast.show('✅ Đã tạo đơn hàng!', 'success');
+    closeModal('order-modal'); loadAdminOrders();
+  } catch (e) { Toast.show(e.message, 'error'); }
+}
+
+// ===== Mã giảm giá =====
+let allCoupons = [];
+async function loadAdminCoupons() {
+  allCoupons = await api('GET', '/api/coupons');
+  const tbody = document.getElementById('coupons-tbody');
+  if (!allCoupons.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Chưa có mã giảm giá nào</td></tr>'; return; }
+  tbody.innerHTML = allCoupons.map(c => `
+    <tr>
+      <td><strong style="color:var(--red);">${c.code}</strong></td>
+      <td>${c.type === 'percent' ? 'Phần trăm' : 'Cố định'}</td>
+      <td style="font-weight:600;">${c.type === 'percent' ? c.value + '%' : fmt.price(c.value)}</td>
+      <td>${c.minOrder ? fmt.price(c.minOrder) : '—'}</td>
+      <td>${c.used || 0} / ${c.usageLimit ? c.usageLimit : '∞'}</td>
+      <td style="color:var(--muted);">${c.expiry ? fmt.date(c.expiry) : '—'}</td>
+      <td><span class="status-badge" style="${c.active ? 'background:#e8f5e9;color:#2e7d32;' : 'background:#fce4ec;color:#c62828;'}">${c.active ? 'Hoạt động' : 'Tạm dừng'}</span></td>
+      <td>
+        <button class="tbtn tbtn-edit" onclick="editCoupon(${c.id})">Sửa</button>
+        <button class="tbtn tbtn-del" onclick="deleteCoupon(${c.id})" style="margin-left:4px;">Xóa</button>
+      </td>
+    </tr>`).join('');
+}
+function openCouponModal(c) {
+  document.getElementById('coupon-modal-title').textContent = c ? 'Sửa mã giảm giá' : 'Thêm mã giảm giá';
+  document.getElementById('coupon-id').value = c?.id || '';
+  document.getElementById('coupon-code').value = c?.code || '';
+  document.getElementById('coupon-type').value = c?.type || 'percent';
+  document.getElementById('coupon-value').value = c?.value || '';
+  document.getElementById('coupon-max').value = c?.maxDiscount || '';
+  document.getElementById('coupon-min').value = c?.minOrder || '';
+  document.getElementById('coupon-limit').value = c?.usageLimit || '';
+  document.getElementById('coupon-expiry').value = c?.expiry || '';
+  document.getElementById('coupon-active').value = (c ? c.active : true) ? 'true' : 'false';
+  document.getElementById('coupon-desc').value = c?.description || '';
+  openModal('coupon-modal');
+}
+function editCoupon(id) { openCouponModal(allCoupons.find(c => c.id === id)); }
+async function saveCoupon() {
+  const id = document.getElementById('coupon-id').value;
+  const code = document.getElementById('coupon-code').value.trim();
+  if (!code) return Toast.show('Vui lòng nhập mã code!', 'error');
+  const data = {
+    code,
+    type: document.getElementById('coupon-type').value,
+    value: +document.getElementById('coupon-value').value || 0,
+    maxDiscount: +document.getElementById('coupon-max').value || 0,
+    minOrder: +document.getElementById('coupon-min').value || 0,
+    usageLimit: +document.getElementById('coupon-limit').value || 0,
+    expiry: document.getElementById('coupon-expiry').value,
+    active: document.getElementById('coupon-active').value === 'true',
+    description: document.getElementById('coupon-desc').value.trim(),
+  };
+  try {
+    if (id) await api('PUT', `/api/coupons/${id}`, data);
+    else await api('POST', '/api/coupons', data);
+    closeModal('coupon-modal'); Toast.show('✅ Đã lưu mã giảm giá!', 'success'); loadAdminCoupons();
+  } catch (e) { Toast.show(e.message, 'error'); }
+}
+async function deleteCoupon(id) { if (confirm('Xóa mã giảm giá này?')) { await api('DELETE', `/api/coupons/${id}`); Toast.show('Đã xóa'); loadAdminCoupons(); } }
+
+// ===== Trò chuyện (Admin) =====
+let chatList = [], activeChatUser = null, chatPollTimer = null;
+function chatTime(s) { return s ? new Date(s).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' }) : ''; }
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+async function loadChatList() {
+  chatList = await api('GET', '/api/chat');
+  const el = document.getElementById('chat-admin-list');
+  if (!chatList.length) { el.innerHTML = '<div class="chat-admin-empty" style="padding:20px;">Chưa có cuộc trò chuyện nào</div>'; return; }
+  el.innerHTML = chatList.map(c => `
+    <div class="chat-conv-item ${activeChatUser === c.userId ? 'active' : ''}" onclick="openConversation(${c.userId})">
+      <div class="cc-avatar">${(c.userName || '?').charAt(0).toUpperCase()}</div>
+      <div class="cc-info">
+        <div class="cc-name">${escapeHtml(c.userName)} ${c.unreadByAdmin ? `<span class="cc-unread">${c.unreadByAdmin}</span>` : ''}</div>
+        <div class="cc-last">${c.lastFrom === 'admin' ? 'Bạn: ' : ''}${escapeHtml(c.lastMessage || '...')}</div>
+      </div>
+      <div class="cc-time">${chatTime(c.updatedAt)}</div>
+    </div>`).join('');
+}
+
+async function openConversation(userId) {
+  activeChatUser = userId;
+  clearInterval(chatPollTimer);
+  await renderConversation();
+  chatPollTimer = setInterval(renderConversation, 4000);
+  loadChatList();
+  updateChatBadge();
+}
+
+async function renderConversation() {
+  if (!activeChatUser) return;
+  let chat;
+  try { chat = await api('GET', `/api/chat/${activeChatUser}`); } catch { return; }
+  
+  const conv = document.getElementById('chat-admin-conv');
+  const msgs = chat.messages.map(m => `
+    <div class="chat-msg ${m.from === 'admin' ? 'mine' : 'theirs'}">
+      ${m.from === 'user' ? `<div class="chat-msg-from">${escapeHtml(chat.userName)}</div>` : ''}
+      <div class="chat-bubble">${escapeHtml(m.text)}</div>
+      <div class="chat-time">${chatTime(m.at)}</div>
+    </div>`).join('');
+    
+  const messagesContent = msgs || '<div class="chat-admin-empty">Chưa có tin nhắn</div>';
+  
+  const existingBox = document.getElementById('admin-chat-messages');
+  
+  if (existingBox) {
+    existingBox.innerHTML = messagesContent;
+    existingBox.scrollTop = existingBox.scrollHeight;
+  } else {
+    conv.innerHTML = `
+      <div class="chat-conv-head">💬 ${escapeHtml(chat.userName)} <span style="font-weight:400;color:var(--muted);font-size:12px;">(ID: ${chat.userId})</span></div>
+      <div class="chat-messages" id="admin-chat-messages" style="flex:1;">${messagesContent}</div>
+      <div class="chat-foot">
+        <input id="admin-chat-input" type="text" placeholder="Nhập câu trả lời..." onkeydown="if(event.key==='Enter')sendAdminReply()">
+        <button onclick="sendAdminReply()">Gửi</button>
+      </div>`;
+      
+    const newBox = document.getElementById('admin-chat-messages');
+    if (newBox) newBox.scrollTop = newBox.scrollHeight;
+  }
+}
+
+async function sendAdminReply() {
+  const inp = document.getElementById('admin-chat-input');
+  const text = inp.value.trim();
+  if (!text || !activeChatUser) return;
+  inp.value = '';
+  try {
+    await api('POST', `/api/chat/${activeChatUser}`, { text });
+    await renderConversation();
+    loadChatList();
+  } catch (e) { Toast.show(e.message, 'error'); inp.value = text; }
+}
+
+async function updateChatBadge() {
+  try {
+    const { total } = await api('GET', '/api/chat/unread-count');
+    const badge = document.getElementById('chat-nav-badge');
+    if (badge) { badge.textContent = total; badge.style.display = total > 0 ? 'inline-flex' : 'none'; }
+  } catch {}
+}
+setInterval(updateChatBadge, 8000);
+updateChatBadge();
+
+loadDashboard();
+</script>
+</body>
+</html>

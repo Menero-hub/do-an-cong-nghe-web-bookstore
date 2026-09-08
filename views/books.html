@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách sách - D2TP book</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div>Chào mừng bạn đến với hệ thống nhà sách D2TP book!</div>
+    <div class="top-bar-links">
+      <a href="/promotions">Khuyến mãi</a>
+      <a href="/about">Hệ thống nhà sách</a>
+      <a href="#" onclick="ChatWidget.open(); return false;">Hỗ trợ khách hàng</a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-box">
+        <div class="logo-d2t">D2TP</div>
+        <div class="logo-book">BOOK</div>
+      </div>
+    </a>
+    
+    <div class="header-search">
+      <input id="nav-search" type="text" placeholder="Tìm kiếm sách, tác giả, nhà xuất bản...">
+      <button onclick="triggerSearch()">🔍</button>
+    </div>
+
+    <div class="header-actions">
+      <div class="user-menu-wrap" id="user-menu" style="display:none;">
+        <a href="#" class="header-btn" onclick="toggleDropdown(); return false;">
+          <span class="icon">😊</span>
+          <span id="user-name">Tài khoản</span>
+        </a>
+        <div class="user-dropdown" id="user-dropdown">
+          <a href="/orders">📦 Đơn hàng của tôi</a>
+          <a href="/admin" class="admin-link" style="display:none;">⚙️ Quản trị hệ thống</a>
+          <a href="#" class="danger" onclick="Auth.logout(); return false;">🚪 Đăng xuất</a>
+        </div>
+      </div>
+      
+      <a href="/login" class="header-btn" id="login-link">
+        <span class="icon">👤</span>
+        <span>Đăng nhập</span>
+      </a>
+
+      <a href="/cart" class="header-btn cart-btn">
+        <span class="icon">🛒</span>
+        <span>Giỏ hàng</span>
+        <span class="cart-count" id="cart-badge" style="display:none">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <a href="/">Trang chủ</a> / <span>Danh sách sách</span>
+  </div>
+</div>
+<div class="page-title">
+  <div class="page-title-inner">
+    📚 Danh Mục Sản Phẩm 
+  </div>
+</div>
+
+<div class="books-layout">
+  
+  <div class="filter-panel">
+    <div class="filter-header">Nhóm Sản Phẩm</div>
+    <div class="filter-section" id="cat-chips">
+      </div>
+  </div>
+
+  <div class="catalog-content">
+    <div class="sort-bar">
+      <label>Sắp xếp theo:</label>
+      <select onchange="filterSort(this.value)">
+        <option value="">Bán chạy tuần</option>
+        <option value="price_asc">Giá từ thấp đến cao</option>
+        <option value="price_desc">Giá từ cao xuống thấp</option>
+        <option value="rating">Đánh giá cao nhất</option>
+        <option value="sold">Bán chạy nhất</option>
+      </select>
+      <div class="result-count" id="result-count">Đang tải...</div>
+    </div>
+    
+    <div class="product-grid" id="books-grid">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div>© 2024 D2TP book. Tất cả các quyền được bảo lưu.</div>
+      <div>Được xây dựng với ❤️ tại Việt Nam.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+<script>
+let currentCat = null, currentSort = '';
+const params = new URLSearchParams(location.search);
+if (params.get('category')) currentCat = params.get('category');
+if (params.get('sort')) currentSort = params.get('sort');
+if (params.get('search')) document.getElementById('nav-search').value = params.get('search');
+
+function triggerSearch() {
+  const q = document.getElementById('nav-search').value;
+  if(q) window.location.href = `/books?search=${encodeURIComponent(q)}`;
+}
+
+function renderProductCard(book) {
+  const discount = book.originalPrice ? Math.round((1 - book.price / book.originalPrice) * 100) : 0;
+  const addToCartJs = `event.preventDefault(); Cart.add({id: ${book.id}, title: '${book.title.replace(/'/g, "\\'")}', price: ${book.price}, cover: '${book.cover}', author: '${book.author}'}, 1);`;
+
+  return `
+    <a href="/book/${book.id}" class="product-card">
+      <div class="product-thumb">
+        <img src="${book.cover}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/130x170/f5f5f5/c92127?text=📚'">
+        ${discount > 0 ? `<div class="badge-discount">-${discount}%</div>` : ''}
+        ${book.featured ? `<div class="badge-hot">HOT</div>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-title">${book.title}</div>
+        <div class="product-author">${book.author}</div>
+        <div class="product-rating">
+          <span class="stars-sm">${'★'.repeat(Math.round(book.rating))}</span>
+          <span>(${book.sold.toLocaleString()})</span>
+        </div>
+        <div class="product-price-row">
+          <span class="price-new">${fmt.price(book.price)}</span>
+          ${book.originalPrice ? `<span class="price-old">${fmt.price(book.originalPrice)}</span>` : ''}
+        </div>
+      </div>
+      <button class="btn-add-to-cart" onclick="${addToCartJs}">
+        🛒 Thêm giỏ hàng
+      </button>
+    </a>`;
+}
+
+async function loadBooks() {
+  const grid = document.getElementById('books-grid');
+  grid.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  
+  let url = '/api/books?';
+  if (currentCat) url += `category=${currentCat}&`;
+  if (currentSort) url += `sort=${currentSort}&`;
+  const search = document.getElementById('nav-search').value;
+  if (search) url += `search=${encodeURIComponent(search)}&`;
+  if (params.get('featured')) url += 'featured=true&';
+
+  try {
+    const books = await api('GET', url);
+    document.getElementById('result-count').innerHTML = `Đang hiển thị <strong>${books.length}</strong> kết quả`;
+
+    if (!books.length) {
+      grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--muted)">😔 Không tìm thấy sách nào phù hợp</div>';
+      return;
+    }
+
+    grid.innerHTML = books.map(renderProductCard).join('');
+  } catch (e) {
+    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--red)">Lỗi tải dữ liệu. Vui lòng thử lại!</div>';
+  }
+}
+
+async function loadCats() {
+  const cats = await api('GET', '/api/categories');
+  let html = `<button class="filter-chip ${!currentCat ? 'active' : ''}" onclick="filterCat(null, this)" style="display:block; width:100%; text-align:left; margin-bottom: 5px;">Tất cả sách</button>`;
+  
+  html += cats.map(c => `
+    <button class="filter-chip ${currentCat == c.id ? 'active' : ''}" onclick="filterCat(${c.id}, this)" style="display:block; width:100%; text-align:left; margin-bottom: 5px;">
+      ${c.name}
+    </button>
+  `).join('');
+  
+  document.getElementById('cat-chips').innerHTML = html;
+}
+
+function filterCat(id, el) {
+  document.querySelectorAll('#cat-chips .filter-chip').forEach(btn => btn.classList.remove('active'));
+  el.classList.add('active');
+  currentCat = id;
+  loadBooks();
+}
+
+function filterSort(val) { currentSort = val; loadBooks(); }
+
+loadCats();
+loadBooks();
+</script>
+</body>
+</html>

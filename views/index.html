@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D2TP book - Nhà sách trực tuyến</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div>Chào mừng bạn đến với hệ thống nhà sách D2TP book!</div>
+    <div class="top-bar-links">
+      <a href="/promotions">Khuyến mãi</a>
+      <a href="/about">Hệ thống nhà sách</a>
+      <a href="#" onclick="ChatWidget.open(); return false;">Hỗ trợ khách hàng</a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-box">
+        <div class="logo-d2t">D2TP</div>
+        <div class="logo-book">BOOK</div>
+      </div>
+    </a>
+    
+    <div class="header-search">
+      <input id="nav-search" type="text" placeholder="Tìm kiếm sách, tác giả, nhà xuất bản...">
+      <button onclick="triggerSearch()">🔍</button>
+    </div>
+
+    <div class="header-actions">
+      <div class="user-menu-wrap" id="user-menu" style="display:none;">
+        <a href="#" class="header-btn" onclick="toggleDropdown(); return false;">
+          <span class="icon">😊</span>
+          <span id="user-name">Tài khoản</span>
+        </a>
+        <div class="user-dropdown" id="user-dropdown">
+          <a href="/orders">📦 Đơn hàng của tôi</a>
+          <a href="/admin" class="admin-link" style="display:none;">⚙️ Quản trị hệ thống</a>
+          <a href="#" class="danger" onclick="Auth.logout(); return false;">🚪 Đăng xuất</a>
+        </div>
+      </div>
+      
+      <a href="/login" class="header-btn" id="login-link">
+        <span class="icon">👤</span>
+        <span>Đăng nhập</span>
+      </a>
+
+      <a href="/cart" class="header-btn cart-btn">
+        <span class="icon">🛒</span>
+        <span>Giỏ hàng</span>
+        <span class="cart-count" id="cart-badge" style="display:none">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<nav class="cat-nav">
+  <div class="cat-nav-inner" id="cat-nav-bar">
+    <a href="/books" class="cat-nav-item active">≡ Tất Cả Danh Mục</a>
+    </div>
+</nav>
+
+<main>
+  <section class="hero-section">
+    <div class="hero-inner">
+      <div class="sidebar-cats" id="sidebar-cats">
+        </div>
+      
+<div style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow);">
+        <img src="/images/banner-moi.png.png" alt="Đại Tiệc Sách Mới" style="width: 100%; height: auto; display: block; object-fit: cover;">
+        
+        <a href="/books?sort=sold" title="Khám phá ngay" style="
+          position: absolute;
+          top: 58%;                  /* Vị trí từ trên xuống (có thể chỉnh to/nhỏ để vừa khít nút) */
+          left: 50%;                 /* Căn giữa theo chiều ngang */
+          transform: translateX(-50%);
+          width: 20%;                /* Độ rộng vùng click (khoảng 20% chiều ngang ảnh) */
+          height: 14%;               /* Chiều cao vùng click */
+          border-radius: 99px;       /* Bo tròn góc giống nút trên ảnh */
+          transition: background 0.2s;
+        " onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'" onmouseout="this.style.background='transparent'"></a>
+      </div>
+      
+      <div class="flash-panel">
+        <div class="flash-header">⚡ FLASH SALE</div>
+        <div id="flash-items">
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section">
+    <div class="promo-strip">
+      <div class="promo-card"><div class="picon">🚚</div><div class="ptext"><strong>Freeship</strong><span>Đơn từ 300k</span></div></div>
+      <div class="promo-card"><div class="picon">🛡️</div><div class="ptext"><strong>100% Chính hãng</strong><span>Sách thật</span></div></div>
+      <div class="promo-card"><div class="picon">🔄</div><div class="ptext"><strong>Đổi trả 7 ngày</strong><span>Miễn phí</span></div></div>
+      <div class="promo-card"><div class="picon">🎁</div><div class="ptext"><strong>Quà tặng</strong><span>Mọi đơn hàng</span></div></div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-box">
+      <div class="section-head">
+        <h2>Danh mục sản phẩm</h2>
+      </div>
+      <div class="cat-grid" id="categories-grid">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-box">
+      <div class="section-head">
+        <h2>🔥 Sách Bán Chạy Nhất</h2>
+        <a href="/books?sort=sold" class="view-all">Xem tất cả ></a>
+      </div>
+      <div class="product-grid" id="bestseller-books">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-box">
+      <div class="section-head">
+        <h2>⭐ Sách Nổi Bật</h2>
+        <a href="/books?featured=true" class="view-all">Xem tất cả ></a>
+      </div>
+      <div class="product-grid" id="featured-books">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="fb-logo"><span>D2TP</span> BOOK</div>
+        <p>Hệ thống nhà sách trực tuyến hàng đầu, mang đến cho bạn những cuốn sách hay nhất với trải nghiệm mua sắm tuyệt vời.</p>
+        <div class="hotline">
+          1900 1234
+          <small>Hỗ trợ khách hàng (8h - 21h)</small>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Dịch Vụ</h4>
+        <ul>
+          <li><a href="/info?topic=dieu-khoan">Điều khoản sử dụng</a></li>
+          <li><a href="/info?topic=bao-mat">Chính sách bảo mật</a></li>
+          <li><a href="/about">Giới thiệu D2TP book</a></li>
+          <li><a href="/info?topic=trung-tam">Hệ thống trung tâm</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hỗ Trợ</h4>
+        <ul>
+          <li><a href="/info?topic=doi-tra">Chính sách đổi trả</a></li>
+          <li><a href="/info?topic=van-chuyen">Phương thức vận chuyển</a></li>
+          <li><a href="/info?topic=thanh-toan">Phương thức thanh toán</a></li>
+          <li><a href="/info?topic=faq">Câu hỏi thường gặp</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Tài Khoản</h4>
+        <ul>
+          <li><a href="/register">Đăng nhập / Đăng ký</a></li>
+          <li><a href="/orders">Lịch sử đơn hàng</a></li>
+          <li><a href="/cart">Giỏ hàng của tôi</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div>© 2024 D2TP book. Tất cả các quyền được bảo lưu.</div>
+      <div>Được xây dựng với ❤️ tại Việt Nam.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+<script>
+const CATEGORY_ICONS = { 'Văn học': '📖', 'Kỹ năng sống': '🌱', 'Khoa học': '🔬', 'Lịch sử': '🏛️', 'Thiếu nhi': '🎈', 'Tâm lý học': '🧠' };
+
+function triggerSearch() {
+  const q = document.getElementById('nav-search').value;
+  if(q) window.location.href = `/books?search=${encodeURIComponent(q)}`;
+}
+
+// Render the new Product Card structure
+function renderProductCard(book) {
+  const discount = book.originalPrice ? Math.round((1 - book.price / book.originalPrice) * 100) : 0;
+  
+  // Tránh việc nhấn nút "Thêm vào giỏ" bị chuyển trang
+  const addToCartJs = `event.preventDefault(); Cart.add({id: ${book.id}, title: '${book.title.replace(/'/g, "\\'")}', price: ${book.price}, cover: '${book.cover}', author: '${book.author}'}, 1);`;
+
+  return `
+    <a href="/book/${book.id}" class="product-card">
+      <div class="product-thumb">
+        <img src="${book.cover}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/130x170/f5f5f5/c92127?text=📚'">
+        ${discount > 0 ? `<div class="badge-discount">-${discount}%</div>` : ''}
+        ${book.featured ? `<div class="badge-hot">HOT</div>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-title">${book.title}</div>
+        <div class="product-author">${book.author}</div>
+        <div class="product-rating">
+          <span class="stars-sm">${'★'.repeat(Math.round(book.rating))}</span>
+          <span>(${book.sold.toLocaleString()})</span>
+        </div>
+        <div class="product-price-row">
+          <span class="price-new">${fmt.price(book.price)}</span>
+          ${book.originalPrice ? `<span class="price-old">${fmt.price(book.originalPrice)}</span>` : ''}
+        </div>
+      </div>
+      <button class="btn-add-to-cart" onclick="${addToCartJs}">
+        🛒 Thêm giỏ hàng
+      </button>
+    </a>`;
+}
+
+async function loadHome() {
+  try {
+    const cats = await api('GET', '/api/categories');
+    
+    // 1. Render Thanh Menu Ngang (Cat Nav)
+    const catNavHtml = cats.map(c => `<a href="/books?category=${c.id}" class="cat-nav-item">${c.name}</a>`).join('');
+    document.getElementById('cat-nav-bar').innerHTML = `<a href="/books" class="cat-nav-item active">≡ Tất Cả Danh Mục</a>` + catNavHtml;
+
+    // 2. Render Sidebar Danh mục
+    document.getElementById('sidebar-cats').innerHTML = cats.map(c => `
+      <a href="/books?category=${c.id}" class="sidebar-cat-item">
+        <span style="font-size:16px;">${CATEGORY_ICONS[c.name] || '📚'}</span> ${c.name}
+      </a>
+    `).join('');
+
+    // 3. Render Lưới Danh Mục (Cat Grid)
+    document.getElementById('categories-grid').innerHTML = cats.map(c => `
+      <a href="/books?category=${c.id}" class="cat-box">
+        <div class="cat-box-icon">${CATEGORY_ICONS[c.name] || '📗'}</div>
+        <div class="cat-box-name">${c.name}</div>
+      </a>`).join('');
+
+    // Load Sách Bán Chạy (Bestsellers)
+    const bestsellers = await api('GET', '/api/books?sort=sold');
+    
+    // 4. Render Flash Sale (Lấy 2 sách bán chạy nhất)
+    document.getElementById('flash-items').innerHTML = bestsellers.slice(0, 2).map(b => `
+      <a href="/book/${b.id}" class="flash-item" style="display:block; text-decoration:none; color:inherit;">
+        <img src="${b.cover}" onerror="this.src='https://via.placeholder.com/150x150/f5f5f5/c92127?text=📚'">
+        <div class="fname">${b.title}</div>
+        <div class="fprice">${fmt.price(b.price)}</div>
+        ${b.originalPrice ? `<div class="forig">${fmt.price(b.originalPrice)}</div>` : ''}
+      </a>
+    `).join('');
+
+    // 5. Render Lưới Sách Bán Chạy (Lấy 5 cuốn)
+    document.getElementById('bestseller-books').innerHTML = bestsellers.slice(0, 5).map(renderProductCard).join('');
+
+    // 6. Render Lưới Sách Nổi Bật (Featured)
+    const featured = await api('GET', '/api/books?featured=true');
+    document.getElementById('featured-books').innerHTML = featured.slice(0, 5).map(renderProductCard).join('');
+    
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+loadHome();
+</script>
+</body>
+</html>

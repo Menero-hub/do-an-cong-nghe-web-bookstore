@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký - D2TP book</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div>Chào mừng bạn đến với hệ thống nhà sách D2TP book!</div>
+    <div class="top-bar-links">
+      <a href="/login">Đã có tài khoản? Đăng nhập</a>
+    </div>
+  </div>
+</div>
+<header>
+  <div class="header-inner" style="justify-content: center;">
+    <a href="/" class="logo">
+      <div class="logo-box">
+        <div class="logo-d2t">D2TP</div>
+        <div class="logo-book">BOOK</div>
+      </div>
+    </a>
+  </div>
+</header>
+<div class="page-form">
+  <div class="form-card" style="margin: 40px auto; background: white; padding: 30px; border-radius: 8px; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; color: var(--red); margin-bottom: 5px;">Tạo tài khoản</h2>
+    <p class="subtitle" style="text-align: center; color: var(--muted); margin-bottom: 20px;">Tham gia cộng đồng yêu sách 📚</p>
+    
+    <div class="error-msg" id="error-msg" style="color:red; margin-bottom:10px; display:none; text-align:center; font-size:13px;"></div>
+    <div class="success-msg" id="success-msg" style="color:green; margin-bottom:10px; display:none; text-align:center; font-size:13px;"></div>
+
+    <div class="form-group">
+      <label style="display:block; margin-bottom:5px; font-weight:600;">Họ và tên</label>
+      <input type="text" id="name" placeholder="Nguyễn Văn A" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; margin-bottom:15px;">
+    </div>
+    <div class="form-group">
+      <label style="display:block; margin-bottom:5px; font-weight:600;">Email</label>
+      <input type="email" id="email" placeholder="email@example.com" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; margin-bottom:15px;">
+    </div>
+    <div class="form-group">
+      <label style="display:block; margin-bottom:5px; font-weight:600;">Mật khẩu</label>
+      <input type="password" id="password" placeholder="Ít nhất 6 ký tự" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; margin-bottom:15px;">
+    </div>
+    <div class="form-group">
+      <label style="display:block; margin-bottom:5px; font-weight:600;">Xác nhận mật khẩu</label>
+      <input type="password" id="confirm" placeholder="Nhập lại mật khẩu" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; margin-bottom:20px;">
+    </div>
+    <button class="btn-submit" onclick="doRegister()" style="width:100%; padding:12px; background:var(--red); color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Đăng ký</button>
+    
+    <div class="form-footer" style="text-align:center; margin-top:20px; font-size:14px;">
+      Đã có tài khoản? <a href="/login" style="color:var(--red); font-weight:bold;">Đăng nhập</a>
+    </div>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+if (Auth.isLoggedIn()) window.location.href = '/';
+
+async function doRegister() {
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const confirm = document.getElementById('confirm').value;
+  const errEl = document.getElementById('error-msg');
+  const okEl = document.getElementById('success-msg');
+  
+  errEl.style.display = 'none';
+  okEl.style.display = 'none';
+
+  if (password !== confirm) { errEl.textContent = 'Mật khẩu không khớp'; errEl.style.display = 'block'; return; }
+  if (password.length < 6) { errEl.textContent = 'Mật khẩu phải có ít nhất 6 ký tự'; errEl.style.display = 'block'; return; }
+
+  try {
+    await api('POST', '/api/auth/register', { name, email, password });
+    okEl.textContent = '✅ Đăng ký thành công! Đang chuyển hướng...';
+    okEl.style.display = 'block';
+    setTimeout(() => window.location.href = '/login', 1500);
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
