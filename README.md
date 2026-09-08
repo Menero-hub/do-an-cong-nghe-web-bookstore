@@ -55,8 +55,9 @@ Hệ thống được chia làm 2 phân hệ rõ ràng với đầy đủ các n
 
 Yêu cầu máy tính đã cài đặt sẵn **Node.js**. Thực hiện theo các bước sau để chạy dự án:
 
-**Bước 1:** Clone kho mã nguồn này về máy tính:
+**1 số thao tác về hệ thống:** 
 ```bash
+Bước 1:Clone kho mã nguồn này về máy tính:
 git clone [https://github.com/Menero-hub/do-an-cong-nghe-web-bookstore.git](https://github.com/Menero-hub/do-an-cong-nghe-web-bookstore.git)
 Bước 2:  Di chuyển vào thư mục dự án và cài đặt các thư viện cần thiết:
 cd do-an-cong-nghe-web-bookstore
