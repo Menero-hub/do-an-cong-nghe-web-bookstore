@@ -1,82 +1,40 @@
-<div align="center">
-  <h1>📚 D2TP BOOK</h1>
-  <p><b>Hệ thống Website Bán Sách Trực Tuyến - Đồ án môn Công nghệ Web</b></p>
-  
-  [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](#)
-  [![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](#)
-  [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](#)
-  [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](#)
-  [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](#)
-</div>
+This is the **D2TP BOOK** project, an online bookstore e-commerce website built with Node.js, Express, and Vanilla JavaScript.
 
----
+## Features & Architecture
 
-## 🌟 Giới thiệu đồ án
+**Core Architecture**
+This project is built entirely from scratch without heavy frontend frameworks to deeply understand the core of Web Technology. The frontend utilizes Vanilla JavaScript to interact with a RESTful API built on Node.js and Express. Data is persisted in a lightweight JSON file (`db.json`) and cached in-memory, ensuring ultra-low latency and blazing-fast responses.
 
-**D2TP BOOK** là một nền tảng thương mại điện tử chuyên cung cấp các đầu sách đa dạng. Hệ thống được xây dựng hoàn toàn "từ đầu" (from scratch) ở cả phía giao diện (Frontend) và máy chủ (Backend), không sử dụng các framework UI có sẵn, nhằm tối ưu hóa hiệu năng và thể hiện sự nắm vững kiến thức lập trình cốt lõi.
+**Key Features**
+* **Client Side:** Secure user authentication (JWT & Bcrypt), browsing and searching the book catalog, shopping cart management via LocalStorage, and a seamless checkout process.
+* **Admin Side:** A dedicated dashboard for managing the book catalog, categories, user accounts, and tracking order statuses.
 
-> 🎓 **Thông tin đồ án:**
-> * **Sinh viên thực hiện:** Nguyễn Tiến Đạt (MSSV: A50470)
-> * **Đơn vị:** Đại học Thăng Long
-> * **Học phần:** Công nghệ Web
+## Getting Started
 
----
+First, install the dependencies and run the development server:
 
-## ✨ Chức năng chi tiết (Features)
-
-Hệ thống được chia làm 2 phân hệ rõ ràng với đầy đủ các nghiệp vụ thực tế:
-
-### 👤 1. Phân hệ Khách hàng (Client)
-* 🔐 **Xác thực:** Đăng ký và Đăng nhập bảo mật (mã hóa mật khẩu Bcrypt, xác thực JWT).
-* 📖 **Sản phẩm:** Xem danh sách sách, lọc theo danh mục, tìm kiếm theo tên/tác giả, và sắp xếp (giá, lượt bán).
-* 🔍 **Chi tiết:** Hiển thị thông tin chi tiết của sách (tác giả, nhà xuất bản, đánh giá, số lượng tồn kho).
-* 🛒 **Giỏ hàng:** Thêm/bớt số lượng sách, lưu trữ trạng thái giỏ hàng ngay cả khi tải lại trang (LocalStorage).
-* 💳 **Thanh toán:** Nhập thông tin giao hàng và xác nhận đặt hàng (Thanh toán khi nhận hàng - COD).
-* 📦 **Cá nhân:** Xem lịch sử mua hàng cá nhân và theo dõi trạng thái đơn hàng trực tiếp.
-
-### ⚙️ 2. Phân hệ Quản trị viên (Admin)
-* 📊 **Dashboard:** Thống kê tổng quan số lượng Sách, Đơn hàng, Người dùng và Tổng doanh thu.
-* 📚 **Quản lý Sách & Danh mục:** Đầy đủ thao tác Thêm mới, Chỉnh sửa, và Xóa sản phẩm/danh mục (CRUD).
-* 📝 **Quản lý Đơn hàng:** Xem chi tiết thông tin khách đặt mua và cập nhật trạng thái đơn (Đang xử lý ➔ Đang giao ➔ Đã giao ➔ Đã hủy).
-* 👥 **Quản lý Người dùng:** Giám sát danh sách tài khoản và phân quyền hệ thống.
-
----
-
-## 🚀 Công nghệ sử dụng (Tech Stack)
-
-* **Giao diện (Frontend):** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript. Không sử dụng thư viện ngoài để làm chủ DOM và tối ưu hóa UI/UX.
-* **Máy chủ (Backend):** Node.js kết hợp framework Express.js.
-* **Cơ sở dữ liệu:** File-based Database (`db.json`) kết hợp kỹ thuật **In-memory Caching** giúp truy xuất dữ liệu siêu tốc độ.
-* **Bảo mật:** `bcryptjs` (Mã hóa mật khẩu), `jsonwebtoken` (Quản lý phiên đăng nhập).
-
----
-
- Hướng dẫn cài đặt và Khởi chạy
-
-Yêu cầu máy tính đã cài đặt sẵn **Node.js**. Thực hiện theo các bước sau để chạy dự án:
-
-**1 số thao tác về hệ thống:** 
 ```bash
-Bước 1:Clone kho mã nguồn này về máy tính:
-git clone [https://github.com/Menero-hub/do-an-cong-nghe-web-bookstore.git](https://github.com/Menero-hub/do-an-cong-nghe-web-bookstore.git)
-Bước 2:  Di chuyển vào thư mục dự án và cài đặt các thư viện cần thiết:
-cd do-an-cong-nghe-web-bookstore
 npm install
-Bước 3: Khởi động máy chủ ảo:
+# then
 npm start
-Bước 4: Mở trình duyệt web và trải nghiệm hệ thống tại:
-http://localhost:3001
-Tài khoản test Admin:
-Email: admin@bookstore.com
-Mật khẩu: password
-📁 Cấu trúc thư mục dự án
-📦 do-an-cong-nghe-web-bookstore
- ┣ 📂 data           # Chứa file db.json (Cơ sở dữ liệu chính)
- ┣ 📂 public         # Chứa tài nguyên tĩnh (CSS, JS, Hình ảnh sách)
- ┃ ┣ 📂 css
- ┃ ┣ 📂 images
- ┃ ┗ 📂 js
- ┣ 📂 routes         # Chứa các Controller xử lý API Backend (Sách, Đơn hàng, Auth...)
- ┣ 📂 views          # Chứa các file giao diện HTML của Client và Admin
- ┣ 📜 server.js      # File chạy chính của máy chủ Node.js
- ┗ 📜 package.json   # Cấu hình các thư viện sử dụng
+Open http://localhost:3001 with your browser to see the result.
+
+You can start editing the interface by modifying views/index.html or public/css/style.css. The pages will update as you refresh the browser. (Note: You will need to restart the server if you modify backend files like server.js or API routes).
+
+This project uses a custom JSON-based database (data/db.json) combined with in-memory caching to automatically optimize and load data extremely fast without needing a heavy database engine.
+
+Learn More
+To learn more about the technologies used in this project, take a look at the following resources:
+
+Node.js Documentation - learn about Node.js features and API.
+
+Express.js Documentation - learn about the Express web framework routing and middleware.
+
+MDN Web Docs (JavaScript) - an interactive resource to master Vanilla JS and DOM manipulation.
+
+You can check out the source code and file structure in this repository - your feedback and contributions are welcome!
+
+Deploy on Render / Vercel
+The easiest way to deploy your Node.js/Express app is to use cloud platforms like Render or Vercel.
+
+Check out the official Node.js deployment documentation for more details on how to host a full-stack web application.
