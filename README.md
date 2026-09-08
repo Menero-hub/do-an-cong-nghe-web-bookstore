@@ -58,3 +58,24 @@ Yêu cầu máy tính đã cài đặt sẵn **Node.js**. Thực hiện theo cá
 **Bước 1:** Clone kho mã nguồn này về máy tính:
 ```bash
 git clone [https://github.com/Menero-hub/do-an-cong-nghe-web-bookstore.git](https://github.com/Menero-hub/do-an-cong-nghe-web-bookstore.git)
+Bước 2:  Di chuyển vào thư mục dự án và cài đặt các thư viện cần thiết:
+cd do-an-cong-nghe-web-bookstore
+npm install
+Bước 3: Khởi động máy chủ ảo:
+npm start
+Bước 4: Mở trình duyệt web và trải nghiệm hệ thống tại:
+http://localhost:3001
+Tài khoản test Admin:
+Email: admin@bookstore.com
+Mật khẩu: password
+📁 Cấu trúc thư mục dự án
+📦 do-an-cong-nghe-web-bookstore
+ ┣ 📂 data           # Chứa file db.json (Cơ sở dữ liệu chính)
+ ┣ 📂 public         # Chứa tài nguyên tĩnh (CSS, JS, Hình ảnh sách)
+ ┃ ┣ 📂 css
+ ┃ ┣ 📂 images
+ ┃ ┗ 📂 js
+ ┣ 📂 routes         # Chứa các Controller xử lý API Backend (Sách, Đơn hàng, Auth...)
+ ┣ 📂 views          # Chứa các file giao diện HTML của Client và Admin
+ ┣ 📜 server.js      # File chạy chính của máy chủ Node.js
+ ┗ 📜 package.json   # Cấu hình các thư viện sử dụng
