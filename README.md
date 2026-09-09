@@ -73,14 +73,13 @@ Make sure you have **Node.js** (v14 or higher) installed on your machine.
    Open your browser and navigate to:
    
    http://localhost:3001
-   🔑 Demo Administrator Credentials:
+ 🔑 Demo Administrator Credentials:
 
-  Email: admin@bookstore.com
-  
-  Password: password
-   📁 Project Directory Structure
-   
-   📦 do-an-cong-nghe-web-bookstore
+Email: admin@bookstore.com
+
+Password: password
+📁 Project Directory Structure
+📦 do-an-cong-nghe-web-bookstore
  ┣ 📂 data           # Persistent JSON storage (db.json)
  ┣ 📂 public         # Static web assets (CSS styles, client-side JS, cover images)
  ┃ ┣ 📂 css
