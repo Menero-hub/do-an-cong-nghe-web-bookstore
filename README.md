@@ -1,40 +1,88 @@
-This is the **D2TP BOOK** project, an online bookstore e-commerce website built with Node.js, Express, and Vanilla JavaScript.
+<div align="center">
+  <h1>📚 D2TP BOOK</h1>
+  <p><b>Online Bookstore E-Commerce Platform — Web Technology Course Project</b></p>
+  
+  [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](#)
+  [![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](#)
+  [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](#)
+  [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](#)
+  [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](#)
+</div>
 
-## Features & Architecture
+---
 
-**Core Architecture**
-This project is built entirely from scratch without heavy frontend frameworks to deeply understand the core of Web Technology. The frontend utilizes Vanilla JavaScript to interact with a RESTful API built on Node.js and Express. Data is persisted in a lightweight JSON file (`db.json`) and cached in-memory, ensuring ultra-low latency and blazing-fast responses.
+## 🌟 Project Overview
 
-**Key Features**
-* **Client Side:** Secure user authentication (JWT & Bcrypt), browsing and searching the book catalog, shopping cart management via LocalStorage, and a seamless checkout process.
-* **Admin Side:** A dedicated dashboard for managing the book catalog, categories, user accounts, and tracking order statuses.
+**D2TP BOOK** is a full-stack e-commerce web application designed for browsing, ordering, and managing an online book catalog. The entire platform is developed from scratch across both the frontend and backend architectures without third-party UI component libraries, emphasizing lightweight performance and a deep mastery of foundational web technologies.
 
-## Getting Started
+> 🎓 **Academic Information:**
+> * **Student:** Nguyen Tien Dat (Student ID: A50470)
+> * **Institution:** Thang Long University
+> * **Course:** Web Technology
 
-First, install the dependencies and run the development server:
+---
 
-```bash
-npm install
-# then
-npm start
-Open http://localhost:3001 with your browser to see the result.
+## ✨ Key Features
 
-You can start editing the interface by modifying views/index.html or public/css/style.css. The pages will update as you refresh the browser. (Note: You will need to restart the server if you modify backend files like server.js or API routes).
+The system is structured into two dedicated operational subsystems:
 
-This project uses a custom JSON-based database (data/db.json) combined with in-memory caching to automatically optimize and load data extremely fast without needing a heavy database engine.
+### 👤 1. Client Subsystem
+* 🔐 **Authentication:** Secure user registration and login mechanisms (passwords encrypted via `bcryptjs`, session handling via JSON Web Tokens).
+* 📖 **Catalog & Discovery:** Real-time search by title or author, category-based filtering, and dynamic sorting (price, sales volume).
+* 🔍 **Product Details:** Detailed book views including author, publisher, publication year, rating, and real-time inventory count.
+* 🛒 **Shopping Cart:** Real-time item quantity adjustment with cart state persistence using `LocalStorage`.
+* 💳 **Checkout:** Order placement workflow with address validation and Cash-on-Delivery (COD) processing.
+* 📦 **Order History:** Personal order tracking interface with live fulfillment status updates.
 
-Learn More
-To learn more about the technologies used in this project, take a look at the following resources:
+### ⚙️ 2. Admin Subsystem
+* 📊 **Dashboard:** Real-time statistical overview displaying total books, incoming orders, registered user accounts, and gross revenue.
+* 📚 **Catalog & Category CRUD:** Full Create, Read, Update, and Delete operations for book products and genres.
+* 📝 **Order Fulfillment:** Comprehensive customer order review and multi-stage status management (Processing ➔ Shipping ➔ Delivered ➔ Cancelled).
+* 👥 **User Management:** Directory of registered user profiles and role privilege inspection.
 
-Node.js Documentation - learn about Node.js features and API.
+---
 
-Express.js Documentation - learn about the Express web framework routing and middleware.
+## 🚀 Tech Stack
 
-MDN Web Docs (JavaScript) - an interactive resource to master Vanilla JS and DOM manipulation.
+* **Frontend:** Semantic HTML5, modern CSS3 (Flexbox & CSS Grid), and Vanilla JavaScript. Built without UI frameworks to ensure complete DOM control and zero bloat.
+* **Backend:** Node.js with the Express.js framework implementing RESTful API architecture.
+* **Database:** Lightweight JSON file-based database (`db.json`) combined with **In-Memory Caching** to ensure ultra-low query latency.
+* **Security:** `bcryptjs` for one-way password hashing, `jsonwebtoken` (JWT) for stateless bearer authentication.
 
-You can check out the source code and file structure in this repository - your feedback and contributions are welcome!
+---
 
-Deploy on Render / Vercel
-The easiest way to deploy your Node.js/Express app is to use cloud platforms like Render or Vercel.
+## 🛠️ Getting Started & Installation
 
-Check out the official Node.js deployment documentation for more details on how to host a full-stack web application.
+### Prerequisites
+Make sure you have **Node.js** (v14 or higher) installed on your machine.
+
+### Installation Steps
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/Menero-hub/do-an-cong-nghe-web-bookstore.git](https://github.com/Menero-hub/do-an-cong-nghe-web-bookstore.git)
+   cd do-an-cong-nghe-web-bookstore
+   1 .Install project dependencies:
+   npm install
+   2.Start the local server:
+   node server.js
+   # or
+   npm start
+   3 Access the application:
+   Open your browser and navigate to:
+   http://localhost:3001
+   🔑 Demo Administrator Credentials:
+
+  Email: admin@bookstore.com
+  Password: password
+   📁 Project Directory Structure
+   📦 do-an-cong-nghe-web-bookstore
+ ┣ 📂 data           # Persistent JSON storage (db.json)
+ ┣ 📂 public         # Static web assets (CSS styles, client-side JS, cover images)
+ ┃ ┣ 📂 css
+ ┃ ┣ 📂 images
+ ┃ ┗ 📂 js
+ ┣ 📂 routes         # Express API controllers (Auth, Books, Categories, Orders, Users)
+ ┣ 📂 views          # HTML interface pages (Storefront & Admin views)
+ ┣ 📜 server.js      # Main Express application entry point
+ ┗ 📜 package.json   # Project dependencies and script definitions
