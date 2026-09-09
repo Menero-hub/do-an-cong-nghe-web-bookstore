@@ -81,7 +81,10 @@ Password: password
 
 📁 Project Directory Structure
 
-📦📦 do-an-cong-nghe-web-bookstore
+## 📁 Project Directory Structure
+
+```text
+📦 do-an-cong-nghe-web-bookstore
  ┣ 📂 data           # Persistent JSON storage (db.json)
  ┣ 📂 public         # Static web assets (CSS styles, client-side JS, cover images)
  ┃ ┣ 📂 css
