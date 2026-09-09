@@ -79,7 +79,6 @@ Email: admin@bookstore.com
 
 Password: password
 
-📁 Project Directory Structure
 
 ## 📁 Project Directory Structure
 
